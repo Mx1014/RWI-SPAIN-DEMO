@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="search_template_extra_options_inherit" inherit_id="account_reports.search_template_extra_options">
+        <xpath expr="//div[hasclass('dropdown-menu', 'o_filters_menu')]" position="inside">
+            <a role="menuitem" class="dropdown-item js_account_report_bool_filter" t-if="options.get('show_empty_accounts') != None" title="Show Empty Accounts" data-filter="show_empty_accounts">Show Empty Accounts</a>
+        </xpath>
+    </template>
+</odoo>

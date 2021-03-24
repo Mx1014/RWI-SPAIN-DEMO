@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="helpdesk_ticket_mail_template_ticket_created" model="mail.template">
+        <field name="name">Helpdesk Ticket: Ticket Created</field>
+        <field name="model_id" ref="helpdesk.model_helpdesk_ticket"/>
+        <field name="subject">New Ticket created for ${object.team_id.name}</field>
+        <field name="body_html" type="html">
+            <p>Hello ${object.team_id.name} team,</p>
+            <p><br/></p>
+            <p>A new ticket was created for your team.</p>
+            <p><br/><b>Ticket #:</b> ${object.id}</p>
+            <p><b>Subject:</b> ${object.name}</p>
+            <p><b>Customer:</b> ${object.partner_id.name or object.partner_name or ''}</p>
+            <p><b>Priority:</b> ${object.priority} <span class="fa fa-star"></span></p>
+            <p><br/></p>
+            <p>
+                <a href="/mail/view?model=helpdesk.ticket&amp;res_id=${object.id}" style="background-color:#875A7B;padding: 10px; text-decoration: none; color: #fff; border-radius: 5px;">
+                    View Ticket
+                </a>
+            </p>
+        </field>
+        <field name="email_from">${object.company_id.email}</field>
+        <field name="email_to">${','.join(object.team_id.member_ids.mapped('email'))}</field>
+    </record>
+</odoo>

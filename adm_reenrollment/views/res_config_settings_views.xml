@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="adm_reenrollment_fields_settings_view_form" model="ir.ui.view">
+        <field name="name">adm_reenrollment.fields.settings.view.form</field>
+        <field name="model">adm_reenrollment.fields.settings</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="field_id" domain="[('model', '=', parent.relational_model)]"/>
+                        <field name="domain"/>
+                        <field name="relational_model" invisible="1"/>
+                    </group>
+                    <field name="child_ids" attrs="{'invisible': [('relational_model', '=', False)]}"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="adm_reenrollment_fields_settings_view_tree" model="ir.ui.view">
+        <field name="name">adm_reenrollment.fields.settings.view.tree</field>
+        <field name="model">adm_reenrollment.fields.settings</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="field_id"/>
+                <field name="domain"/>
+                <field name="child_ids" widget="many2many_tags"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.reenrollment</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="adm.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <!--            <xpath expr="//div[hasclass('settings')]" position="inside">-->
+            <div id="adm_setting" position="inside">
+                <h2>Reenrollment</h2>
+                <div class="row mt16 oe_mb16 o_settings_container" id="reenrollment_settings_container">
+                    <div class="col-12 col-md-6 o_settings_container">
+                        <div class="o_setting_right_pane">
+                            <label for="reenrollment_announcement_mail_template_id"/>
+                            <div class="content-group">
+                                <div class="mt16">
+                                    <field name="reenrollment_announcement_mail_template_id"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 o_setting_box">
+                        <div class="o_setting_right_pane">
+                            <label for="adm_reenrollment_required_field_ids"/>
+                            <div class="content-group">
+                                <div class="mt16">
+                                    <field name="adm_reenrollment_required_field_ids"
+                                           class="o_light_label"
+                                           options="{'no_open': 0}"
+                                           style="width: 100%"
+                                           domain="[('id', 'not in', adm_reenrollment_optional_field_ids), ('parent_id', '=', False)]">
+                                        <tree>
+                                            <field name="name"/>
+                                            <field name="field_id"/>
+                                            <field name="domain"/>
+                                            <field name="child_ids" widget="many2many_tags"/>
+                                        </tree>
+                                        <form>
+                                            <group>
+                                                <field name="field_id" domain="[('model', '=', 'adm.reenrollment')]"/>
+                                                <field name="domain"/>
+                                                <field name="relational_model" invisible="1"/>
+                                            </group>
+                                            <field name="child_ids"
+                                                   attrs="{'invisible': [('relational_model', '=', False)]}"/>
+                                        </form>
+                                    </field>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 o_setting_box">
+                        <div class="o_setting_right_pane">
+                            <label for="adm_reenrollment_optional_field_ids"/>
+                            <div class="content-group">
+                                <div class="mt16">
+                                    <field name="adm_reenrollment_optional_field_ids"
+                                           class="o_light_label"
+                                           options="{'no_open': 0}"
+                                           style="width: 100%"
+                                           domain="[('id', 'not in', adm_reenrollment_required_field_ids), ('parent_id', '=', False)]">
+                                        <tree>
+                                            <field name="name"/>
+                                            <field name="field_id"/>
+                                            <field name="domain"/>
+                                            <field name="child_ids" widget="many2many_tags"/>
+                                        </tree>
+                                        <form>
+                                            <group>
+                                                <field name="field_id" domain="[('model', '=', 'adm.reenrollment')]"/>
+                                                <field name="domain"/>
+                                                <field name="relational_model" invisible="1"/>
+                                            </group>
+                                            <field name="child_ids"
+                                                   attrs="{'invisible': [('relational_model', '=', False)]}"/>
+                                        </form>
+                                    </field>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 o_settings_box">
+                        <div class="o_setting_right_pane">
+                            <label for="def_ren_enrollment_status_id"/>
+                            <div class="content-group">
+                                <div class="mt16">
+                                    <field name="def_ren_enrollment_status_id" string="Default current enrollmet status"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 o_settings_box">
+                        <div class="o_setting_right_pane">
+                            <label for="def_ren_next_enrollment_status_id" string="Default next enrollmet status"/>
+                            <div class="content-group">
+                                <div class="mt16">
+                                    <field name="def_ren_next_enrollment_status_id"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--            </xpath>-->
+        </field>
+    </record>
+
+</odoo>

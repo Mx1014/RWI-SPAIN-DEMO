@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="formio_builder_view_form_inherit" model="ir.ui.view">
+        <field name="name">formio.builder.view.form.inherit</field>
+        <field name="model">formio.builder</field>
+        <field name="inherit_id" ref="formio.view_formio_builder_form"/>
+        <field name="arch" type="xml">
+            <label for="public_access_interval_number" position="before">
+                <field name="public_access_expire_on_submit"/>
+            </label>
+        </field>
+    </record>
+</odoo>

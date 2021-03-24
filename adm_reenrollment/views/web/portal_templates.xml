@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <template id="portal_my_home_adm_reenrollment" name="Portal My Home : Admissions Reenrollment" inherit_id="portal.portal_my_home"
+              priority="50">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Reenrollments</t>
+                <t t-set="url" t-value="'/my/reenrollments'"/>
+                <t t-set="count" t-value="reenrollment_count or 0"/>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_menu_reenrollment" name="Portal layout : reenrollment menu entries" inherit_id="portal.portal_breadcrumbs" priority="50">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'reenrollments' or reenrollment_id" t-attf-class="breadcrumb-item #{'active ' if not reenrollment_id else ''}">
+                <a t-if="reenrollment_id" t-attf-href="/my/reenrollments">Reenrollment List</a>
+                <t t-else="">Reenrollment List</t>
+            </li>
+            <li t-if="reenrollment_id" class="breadcrumb-item active">
+                <span t-field="reenrollment_id.name"/>
+            </li>
+        </xpath>
+    </template>
+
+</odoo>

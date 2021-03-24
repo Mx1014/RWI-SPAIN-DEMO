@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="workflow_workflow_view_tree" model="ir.ui.view">
+        <field name="name">workflow.workflow.view.tree</field>
+        <field name="model">workflow.workflow</field>
+        <field name="arch" type="xml">
+            <tree string="Workflows">
+                <field name="model_id"/>
+                <field name="stage_ids" widget="many2many_tags"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="workflow_workflow_view_form" model="ir.ui.view">
+        <field name="name">workflow.workflow.view.form</field>
+        <field name="model">workflow.workflow</field>
+        <field name="arch" type="xml">
+            <form string="Workflow">
+                <sheet>
+                    <group>
+                        <field name="model_id"/>
+                    </group>
+                    <separator string="Stages"/>
+                    <field name="stage_ids"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="workflow_workflow_action" model="ir.actions.act_window">
+        <field name="name">Workflow</field>
+        <field name="res_model">workflow.workflow</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <menuitem
+        id="workflow_workflow_menu"
+        name="Workflows"
+        action="workflow_workflow_action"
+        parent="base.menu_custom"
+        sequence="0"/>
+</odoo>

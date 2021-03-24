@@ -1,0 +1,16 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+sincro_data_configuration_panel_access,sincro_data_configuration_panel_access,sincro_data.model_sincro_data_configuration_panel,,1,1,1,1
+sincro_data_webservice_configurator_access,sincro_data_webservice_configurator_access,sincro_data.model_sincro_data_webservice_configurator,,1,1,1,1
+
+access_sincro_data_server,access.sincro_data.server,model_sincro_data_server,base.group_system,1,1,1,1
+access_sincro_data_class,access.sincro_data.class,model_sincro_data_class,,1,1,1,1
+access_sincro_data_api,access.sincro_data.api,model_sincro_data_api,base.group_system,1,1,1,1
+access_sincro_data_header,access.sincro_data.header,model_sincro_data_header,base.group_system,1,1,1,1
+access_sincro_data_parameter,access.sincro_data.parameter,model_sincro_data_parameter,base.group_system,1,1,1,1
+access_sincro_data_log,access.sincro_data.log,model_sincro_data_log,base.group_system,1,1,1,1
+
+access_update_state,access.update.state,model_update_state,base.group_system,1,1,1,1
+
+access_sincro_data_field_ud,access.sincro_data.field_ud,model_sincro_data_field_ud,base.group_system,1,1,1,1
+access_sincro_data_group_ud,access.sincro_data.group_ud,model_sincro_data_group_ud,base.group_system,1,1,1,1
+access_sincro_data_group_type_ud,access.sincro_data.group_type_ud,model_sincro_data_group_type_ud,base.group_system,1,1,1,1

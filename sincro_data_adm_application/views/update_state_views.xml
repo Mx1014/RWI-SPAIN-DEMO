@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="update_state_form" model="ir.ui.view">
+            <field name="name">List of Applicants</field>
+            <field name="model">update.state</field>
+            <field name="arch" type="xml">
+                <form>
+                    <field name="default_applications" attrs="{'invisible': [('default_applications', '=', [])]}">
+                        <tree decoration-success="is_success and not is_warning and not is_error"
+                              decoration-warning="is_warning and not is_error" decoration-danger="is_error"
+                              create="0">
+                            <field invisible="1" name="is_success"/>
+                            <field invisible="1" name="is_warning"/>
+                            <field invisible="1" name="is_error"/>
+                            <field string="Applicant´s name" name="name"/>
+                            <field string="Result of the tests" name="comment" class="pre-wrap"/>
+                        </tree>
+                    </field>
+                    <field name="default_reenrollments" attrs="{'invisible': [('default_reenrollments', '=', [])]}">
+                        <tree decoration-success="is_success and not is_warning and not is_error"
+                              decoration-warning="is_warning and not is_error" decoration-danger="is_error"
+                              create="0">
+                            <field invisible="1" name="is_success"/>
+                            <field invisible="1" name="is_warning"/>
+                            <field invisible="1" name="is_error"/>
+                            <field string="Reenrollment student´s name" name="name"/>
+                            <field string="Result of the tests" name="comment" class="pre-wrap"/>
+                        </tree>
+                    </field>
+                    <footer>
+                        <button class="btn btn-success" name="update_state_application" attrs="{'invisible': [('default_applications', '=', [])]}" string="Update" type="object"/>
+                        <button class="btn btn-success" name="update_state_reenrollment" attrs="{'invisible': [('default_reenrollments', '=', [])]}" string="Update" type="object"/>
+                        <button string="Cancel" class="btn btn-danger" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+    <!--        <act_window name="Update State"-->
+    <!--                    id="update_state_action"-->
+    <!--                    res_model="update.state"-->
+    <!--                    binding_model="adm.application"-->
+    <!--                    binding_views="form"-->
+    <!--                    view_mode="form"-->
+    <!--                    target="new"-->
+    <!--        />-->
+    <!--    <act_window name="Make sale"-->
+    <!--                res_model="res.partner.make.sale"-->
+    <!--                binding_model="res.partner"-->
+    <!--                binding_views="list"-->
+    <!--                view_mode="form"-->
+    <!--                target="new"-->
+    <!--                id="action_partner_make_sale"/>-->
+
+    <act_window name="Export to FACTS (Applications)"
+                id="update_state_application_action"
+                res_model="update.state"
+                binding_model="adm.application"
+                binding_views="list,tree,form"
+                view_mode="form"
+                target="new"
+    />
+
+    <act_window name="Export to FACTS (Reenrollments)"
+                id="update_state_reenrollment_action"
+                res_model="update.state"
+                binding_model="adm.reenrollment"
+                binding_views="list,tree,form"
+                view_mode="form"
+                target="new"
+    />
+
+</odoo>
+
+

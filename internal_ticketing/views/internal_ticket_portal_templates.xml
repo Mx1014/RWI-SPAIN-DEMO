@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_my_home_menu_internal_ticket" name="Portal layout: internal_ticket menu entry" inherit_id="portal.portal_breadcrumbs" priority="50">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'internal_ticket' or internal_ticket or create_internal_ticket" t-attf-class="breadcrumb-item #{'active ' if not (internal_ticket and create_internal_ticket) else ''}">
+                <a t-if="internal_ticket or create_internal_ticket" t-attf-href="/my/internal_ticket?{{ keep_query() }}">Internal Tickets</a>
+                <t t-else="">Internal Tickets</t>
+            </li>
+            <li t-if="internal_ticket" class="breadcrumb-item active">
+                <t t-esc="internal_ticket.name"/>
+            </li>
+            <li t-if="create_internal_ticket" class="breadcrumb-item active">
+                Create
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_internal_ticket" name="Portal My Home : internal_ticket entry" inherit_id="portal.portal_my_home" priority="50">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-if="user.employee_ids" t-call="portal.portal_docs_entry">
+                <t t-set="title">Internal Tickets</t>
+                <t t-set="url" t-value="'/my/internal_ticket'"/>
+                <t t-set="count" t-value="internal_ticket_count"/>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="portal_my_internal_tickets" name="My Internal Tickets">
+        <t t-call="portal.portal_layout">
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Internal Tickets</t>
+            </t>
+            <div class="mb4">
+                <a t-attf-href="/my/internal_ticket/create?{{ keep_query() }}" class="btn btn-primary">Create Ticket</a>
+            </div>
+            <t t-if="not internal_tickets">
+                <p>There are no internal tickets found.</p>
+            </t>
+            <t t-if="internal_tickets" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>Ticket #</th>
+                        <th>Type</th>
+                        <th>Subject</th>
+                        <th>Department</th>
+                        <th>Stage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="internal_tickets" t-as="internal_ticket">
+                        <td>
+                            <a t-attf-href="/my/internal_ticket/#{internal_ticket.id}?{{ keep_query() }}"><span t-esc="internal_ticket.id"/></a>
+                        </td>
+                        <td><span t-field="internal_ticket.team_id"/></td>
+                        <td><span t-field="internal_ticket.name"/></td>
+                        <td><span t-field="internal_ticket.department_id"/></td>
+                        <td><span t-att-class="'badge ' + ('badge-success' if internal_ticket.sudo().stage_id.is_close or internal_ticket.sudo().closed_by_partner else 'badge-danger')" t-field="internal_ticket.stage_id"/></td>
+                    </tr>
+                </tbody>
+            </t>
+        </t>
+    </template>
+
+    <template id="portal_my_internal_ticket" name="My Internal Ticket">
+        <t t-call="portal.portal_layout">
+            <div class="container">
+                <form action="/my/internal_ticket/save" method="post">
+                    <div class="card o_internal_ticket_portal_form">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6">
+                                    <h4>
+                                        <t t-if="internal_ticket">
+                                            Ticket #<span t-esc="internal_ticket.id"/>: <span t-esc="internal_ticket.name"/>
+                                            <span t-if="internal_ticket and internal_ticket.sudo().stage_id.is_close or internal_ticket.sudo().closed_by_partner" class="badge badge-success">Closed</span>
+                                            <span t-else="" class="badge badge-danger">Open</span>
+                                        </t>
+                                        <t t-else="">New</t>
+                                    </h4>
+                                    <div class="mb8" t-if="internal_ticket">
+                                        Stage: <strong t-field="internal_ticket.stage_id"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <div class="mb32">
+                                <div class="row mb8" t-if="internal_ticket">
+                                    <div class="col-sm-12 col-md-3 col-lg-2"><label for="user_id">Ticket #</label></div>
+                                    <div class="col-sm-12 col-md-9 col-lg-10">
+                                        <input class="form-control" type="text" name="id" id="id" disabled="true"
+                                            t-att-value="internal_ticket.id"/>
+                                    </div>
+                                </div>
+                                <div class="row mb8">
+                                    <div class="col-sm-12 col-md-3 col-lg-2"><label for="team_id">Type *</label></div>
+                                    <div class="col-sm-12 col-md-9 col-lg-10">
+                                        <select name="team_id" id="team_id" required="true" class="form-control" t-att-disabled="internal_ticket">
+                                            <option value="">--- Type ---</option>
+                                            <t t-foreach="internal_ticket_team_ids.sudo()" t-as="team_id">
+                                                <option t-att-selected="team_id.id == internal_ticket.team_id.sudo().id" t-att-value="team_id.id" t-esc="team_id.name"/>
+                                            </t>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb8">
+                                    <div class="col-sm-12 col-md-3 col-lg-2"><label for="name">Subject *</label></div>
+                                    <div class="col-sm-12 col-md-9 col-lg-10">
+                                        <input class="form-control" type="text" name="name" id="name" t-att-disabled="internal_ticket"
+                                            t-att-value="internal_ticket.name" required="true"/>
+                                    </div>
+                                </div>
+                                <div class="row mb8">
+                                    <div class="col-sm-12 col-md-3 col-lg-2"><label for="priority">Urgency *</label></div>
+                                    <div class="col-sm-12 col-md-9 col-lg-10">
+                                        <select name="priority" id="priority" required="true" class="form-control" t-att-disabled="internal_ticket">
+                                            <option value="0" t-att-selected="internal_ticket.priority == '0'">Very Low</option>
+                                            <option value="1" t-att-selected="internal_ticket.priority == '1'">Low</option>
+                                            <option value="2" t-att-selected="internal_ticket.priority == '2'">Medium</option>
+                                            <option value="3" t-att-selected="internal_ticket.priority == '3'">High</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb8">
+                                    <div class="col-sm-12 col-md-3 col-lg-2"><label for="location">Location *</label></div>
+                                    <div class="col-sm-12 col-md-9 col-lg-10">
+                                        <input class="form-control" type="text" name="location" id="location" t-att-disabled="internal_ticket"
+                                            t-att-value="internal_ticket.location" required="true"/>
+                                    </div>
+                                </div>
+                                <div class="row mb8">
+                                    <div class="col-12"><label for="location">Description *</label></div>
+                                    <div class="col-12">
+                                        <textarea name="description" t-att-disabled="internal_ticket" id="description" class="form-control"><t t-esc="internal_ticket.description"/></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt16">
+                        <button t-if="not internal_ticket" type="submit" class="btn btn-primary mr4">Submit</button>
+                    </div>
+                </form>
+                <div t-if="internal_ticket and not internal_ticket.stage_id.is_close and not internal_ticket.closed_by_partner" class="modal" tabindex="-1" role="dialog" id="helpdesk_ticket_close_modal">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Close ticket</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">&amp;times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Are you sure you wish to proceed?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a role="button" class="btn btn-primary" t-attf-href="/my/internal_ticket/#{internal_ticket.id}/close">Close the ticket</a>
+                                <button type="button" class="btn btn-light" data-dismiss="modal">Discard</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div t-if="internal_ticket and not internal_ticket.stage_id.is_close and not internal_ticket.closed_by_partner" class="text-center mt-5">
+                    <button class="btn btn-primary mb-1 pt-1" data-target="#helpdesk_ticket_close_modal" data-toggle="modal"><small><b>Close this ticket</b></small></button>
+                    <p><small>
+                        If the issue has been solved, you can close the ticket.
+                    </small></p>
+                </div>
+                <div t-if="internal_ticket" class="o_portal_messages_container mt32">
+                    <h4>Message and communication history</h4>
+                    <t t-call="portal.message_thread">
+                        <t t-set="token" t-value="internal_ticket.access_token"/>
+                        <t t-set="object" t-value="internal_ticket"/>
+                        <t t-set="pid" t-value="pid"/>
+                        <t t-set="hash" t-value="hash"/>
+                        <t t-set="disable_composer" t-value="internal_ticket.stage_id.is_close"/>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

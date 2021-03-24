@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="create_reenrollment_records_view_form" model="ir.ui.view">
+        <field name="name">create.reenrollment.records.view.form</field>
+        <field name="model">create.reenrollment.records</field>
+        <field name="arch" type="xml">
+            <form>
+                <group col="1">
+                    <group>
+                        <field name="next_enrollment_status_id" />
+                        <field name="current_enrollment_status_id" />
+                        <div class="alert alert-warning" role="alert" colspan="2">
+                            If there is some student's existing reenrollment record for the current enrollment year and you want it to be <b>overwritten</b>.
+                            <br/>
+                            Please, ensure that the checkbox below is marked.
+                        </div>
+                        <field name="overwrite_existing_records"/>
+                    </group>
+                    <group>
+                        <field name="student_ids" domain="[('student_next_status_id', '=', next_enrollment_status_id)]" widget="many2many">
+                            <tree limit="10">
+                                <field name="name"/>
+                                <field name="grade_level_id"/>
+                            </tree>
+                        </field>
+                    </group>
+                </group>
+                <footer>
+                    <button name="create_records" confirm="This will create new reenrollment records for the selectect students, are you sure to proceed?"
+                            type="object" string="Create records" class="oe_highlight"/>
+                    <button class="bg-danger" special="cancel" string="Cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="crossovered_budget_lines_cron" model="ir.cron">
+        <field name="name">Budget Line: Variance Warning</field>
+        <field name="model_id" ref="model_crossovered_budget_lines"/>
+        <field name="interval_number">4</field>
+        <field name="interval_type">hours</field>
+        <field name="numbercall">-1</field>
+        <field name="state">code</field>
+        <field name="code">
+activity_obj = env["mail.activity"]
+monitored_budget_lines = model.search([("enable_variance_warning","=",True)])
+for line in monitored_budget_lines.filtered(lambda x: x.crossovered_budget_id.user_id):
+    if line.variance_percentage &lt; line.variance_percentage_warning and not line.variance_warning_sent:
+        activity_obj.create({
+            "res_id": line.crossovered_budget_id.id,
+            "res_model_id": env["ir.model"]._get("crossovered.budget").id,
+            "activity_type_id": env.ref("mail.mail_activity_data_warning").id,
+            "summary": "Budget Line Variance is Below Threshold",
+            "note": """
+                &lt;strong&gt;Budgetary Postion:&lt;/strong&gt; %s&lt;br/&gt;
+                &lt;strong&gt;Analytic Account:&lt;/strong&gt; %s&lt;br/&gt;
+                &lt;strong&gt;Start Date:&lt;/strong&gt; %s&lt;br/&gt;
+                &lt;strong&gt;End Date:&lt;/strong&gt; %s&lt;br/&gt;
+                &lt;strong&gt;Variance %%:&lt;/strong&gt; %s%%&lt;br/&gt;
+                &lt;strong&gt;Variance %% Threshold:&lt;/strong&gt; %s%%&lt;br/&gt;
+            """ % (
+                line.general_budget_id.name,
+                line.analytic_account_id.name,
+                line.date_from,
+                line.date_to,
+                line.variance_percentage * 100,
+                line.variance_percentage_warning * 100,
+            ),
+            "user_id": line.crossovered_budget_id.id,
+        })
+        line.write({"variance_warning_sent": True})
+    elif line.variance_percentage &gt;= line.variance_percentage_warning and line.variance_warning_sent:
+        line.write({"variance_warning_sent": False})
+        </field>
+    </record>
+
+</odoo>

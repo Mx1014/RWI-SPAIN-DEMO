@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="crossovered_budget_view_form_inherit" model="ir.ui.view">
+        <field name="name">crossovered.budget.view.form.inherit</field>
+        <field name="model">crossovered.budget</field>
+        <field name="inherit_id" ref="account_budget.crossovered_budget_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='crossovered_budget_line']/tree/field[@name='practical_amount']" position="after">
+                <field name="variance_amount" sum="Variance Amount"/>
+                <field name="variance_percentage" widget="percentage"/>
+                <field name="enable_variance_warning" optional="show"/>
+                <field name="variance_percentage_warning" optional="show" widget="percentage" attrs="{'invisible': [('enable_variance_warning','=',False)]}"/>
+            </xpath>
+            <xpath expr="//field[@name='crossovered_budget_line']/tree/field[@name='theoritical_amount']" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+            <xpath expr="//field[@name='crossovered_budget_line']/tree/field[@name='percentage']" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="adm_application_view_form"  model="ir.ui.view">
+        <field name="name">adm.application.view.form.inherit.aisj</field>
+        <field name="model">adm.application</field>
+        <field name="inherit_id" ref="adm.adm_application_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//label[@for='previous_school_ids']" position="before">
+                <hr colspan="12"/>
+                <label for="c_aisj_schools_q1" colspan="8"/>
+                <field name="c_aisj_schools_q1" colspan="4" nolabel="1"/>
+                <label for="c_aisj_schools_q2" colspan="8"/>
+                <field name="c_aisj_schools_q2" colspan="4" nolabel="1"/>
+                <hr colspan="12"/>
+            </xpath>
+
+            <notebook id="application_notebook" position="inside">
+
+                <page name="parent_questionnaire" string="Parent Questionnaire">
+                    <group col="1">
+                        <field name="c_aisj_parent_questionaire_q1"/>
+                        <field name="c_aisj_parent_questionaire_q2"/>
+                        <field name="c_aisj_parent_questionaire_q3"/>
+
+                        <!-- Checkboxes -->
+                        <field name="c_aisj_parent_questionaire_q4" widget="many2many_checkboxes"/>
+                        <field name="c_aisj_parent_questionaire_q5" widget="many2many_checkboxes"/>
+                        <field name="c_aisj_parent_questionaire_q6" widget="many2many_checkboxes"/>
+
+                        <field name="c_aisj_parent_questionaire_q7"/>
+                        <field name="c_aisj_parent_questionaire_q8" widget="many2many_checkboxes"/>
+                        <field name="c_aisj_parent_questionaire_q9"/>
+                        <field name="c_aisj_parent_questionaire_q10"/>
+
+                        <field name="grade_level_type" invisible="1"/>
+
+                        <field name="c_aisj_elementary_q1" attrs="{'invisible': [('grade_level_type', '!=', 'elementary')]}"/>
+                        <field name="c_aisj_elementary_q1_age" attrs="{'invisible': ['|', ('grade_level_type', '!=', 'elementary'), ('c_aisj_elementary_q1', '=', False)]}"/>
+                        <field name="c_aisj_elementary_q1_country_id" attrs="{'invisible': ['|', ('grade_level_type', '!=', 'elementary'), ('c_aisj_elementary_q1', '=', False)]}"/>
+
+                        <field name="c_aisj_elementary_q2" attrs="{'invisible': [('grade_level_type', '!=', 'elementary')]}"/>
+                        <field name="c_aisj_elementary_q2_age" attrs="{'invisible': ['|', ('grade_level_type', '!=', 'elementary'), ('c_aisj_elementary_q2', '=', False)]}"/>
+
+                        <field name="c_aisj_elementary_q3" attrs="{'invisible': [('grade_level_type', '!=', 'elementary')]}"/>
+                        <field name="c_aisj_elementary_q4" attrs="{'invisible': [('grade_level_type', '!=', 'elementary')]}"/>
+                        <field name="c_aisj_elementary_q5" attrs="{'invisible': [('grade_level_type', '!=', 'elementary')]}"/>
+                        <field name="c_aisj_elementary_q6" attrs="{'invisible': [('grade_level_type', '!=', 'elementary')]}"/>
+                        <field name="c_aisj_elementary_q7" attrs="{'invisible': [('grade_level_type', '!=', 'elementary')]}"/>
+                        <field name="c_aisj_elementary_q8" attrs="{'invisible': [('grade_level_type', '!=', 'elementary')]}"/>
+                        <field name="c_aisj_elementary_q9" attrs="{'invisible': [('grade_level_type', '!=', 'elementary')]}"/>
+                        <field name="c_aisj_elementary_q10" attrs="{'invisible': [('grade_level_type', '!=', 'elementary')]}"/>
+                        <field name="c_aisj_elementary_q11" attrs="{'invisible': [('grade_level_type', '!=', 'elementary')]}"/>
+                        <field name="c_aisj_elementary_q12" attrs="{'invisible': [('grade_level_type', '!=', 'elementary')]}"/>
+                        <field name="c_aisj_elementary_q13" attrs="{'invisible': [('grade_level_type', '!=', 'elementary')]}"/>
+                        <field name="c_aisj_elementary_q14" attrs="{'invisible': [('grade_level_type', '!=', 'elementary')]}"/>
+
+                    </group>
+                </page>
+                <page name="additional_questions" string="Additional Questsions">
+                    <group col="1">
+                        <field name="c_aisj_additional_questions_q1"/>
+                        <field name="c_aisj_additional_questions_q1_list" attrs="{'invisible': [('c_aisj_additional_questions_q1', '=', 'list_ideas')]}"/>
+                        <field name="c_aisj_additional_questions_q2"/>
+                        <field name="c_aisj_additional_questions_q3"/>
+                        <field name="c_aisj_additional_questions_q4"/>
+                    </group>
+                </page>
+            </notebook>
+
+            <page name="parents" position="inside">
+                <group col="1">
+                    <field name="c_aisj_parent_q1"/>
+                    <field name="c_aisj_parent_q2"/>
+                </group>
+                <hr/>
+                <group>
+                    <field name="guardian_relationship1_id"/>
+                    <field name="guardian_relationship2_id"/>
+                </group>
+            </page>
+            <page name="documents" position="inside">
+                <h2>Students documents</h2>
+                <group>
+                    <field name="upload_passport_copy_attachment_id"/>
+                    <field name="permit_copy_attachment_id" />
+                </group>
+                <hr/>
+                <h2 class="text-center">Parent documents</h2>
+                <group>
+                    <group>
+                        <h3>Parent/Guardian 1</h3>
+                        <field string="Passport" name="guardian_relationship1_id_parent_passport_upload"/>
+                        <field string="Residency Permit ID"
+                               name="guardian_relationship1_id_residency_permit_id_number"/>
+                    </group>
+                    <group>
+                        <h3>Parent/Guardian 2</h3>
+                        <field string="Passport" name="guardian_relationship2_id_parent_passport_upload"/>
+                        <field string="Residency Permit ID"
+                               name="guardian_relationship2_id_residency_permit_id_number"/>
+                    </group>
+                </group>
+                <hr/>
+                <h2 class="text-center">Other documents</h2>
+                <group col="1">
+                    <field name="immunization_history_attachment_id"/>
+                    <field name="report_cards_attachment_id"/>
+                    <field name="previous_school_profile_attachment_id"/>
+                    <field name="standardized_tests_attachment_id"/>
+                    <field name="family_identification_document_attachment_id"/>
+                    <field name="special_evaluation_report_attachment_id"/>
+                    <field name="business_card_attachment_id"/>
+                </group>
+            </page>
+        </field>
+    </record>
+</odoo>

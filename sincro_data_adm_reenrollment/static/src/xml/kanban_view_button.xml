@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template id="template" xml:space="preserve">
+            <t t-extend="KanbanView.buttons">
+                <t t-jquery="button" t-operation="after">
+                <!-- <t t-extend="KanbanView.buttons">
+                <t t-jquery="button.o-kanban-button-new" t-operation="before">-->
+                    <t t-if="widget">
+                        <t t-if="widget.modelName == 'adm.application'">
+                <!--                        <button id="custom_print_btn" class="btn btn-success o_kanban_button_import_students" type="button" >IMPORT OPEN STUDENTS</button>-->
+<!--                            <button id="custom_print_btn" context="{'model_name': 'adm_application'}"-->
+<!--                                    class="btn btn-success o_kanban_button_export_to_facts" type="button">EXPORT TO FACTS-->
+
+
+<!--                            </button>-->
+                            <!--                        <button id="import_all_stds_btn3" class="btn btn-warning o_kanban_button_import_students3" onclick="window.location.href='/admission/reenrollment/import_all_students'" type="button">IMPORT ALL OPEN STUDENTS</button>-->
+                            <!--                        <button id="import_all_stds_btn4" class="btn btn-warning o_kanban_button_import_students4" name="import_all_students" type="object">IMPORT ALL OPEN STUDENTS</button>-->
+                            <!--                        <button id="import_all_stds_btn5" class="btn btn-warning o_kanban_button_import_students5" name="import_all_students" type="object">IMPORT ALL OPEN STUDENTS</button>-->
+                        </t>
+                    </t>
+                </t>
+            </t>
+<!--            <t t-extend="ListView.buttons">-->
+<!--                <t t-jquery="button" t-operation="after">-->
+<!--                    <t t-if="widget">-->
+<!--                        <button id="custom_print_btn" context="{'model_name': 'adm_application'}"-->
+<!--                                class="btn btn-success o_kanban_button_accepted_export" type="button">EXPORT 1</button>-->
+<!--                    </t>-->
+<!--                </t>-->
+<!--            </t>-->
+
+      </template>

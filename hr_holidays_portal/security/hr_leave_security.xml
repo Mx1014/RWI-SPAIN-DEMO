@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_leave_rule_portal_read" model="ir.rule">
+        <field name="name">Portal (Read)</field>
+        <field name="model_id" ref="hr_holidays.model_hr_leave"/>
+        <field name="perm_read">1</field>
+        <field name="perm_write">0</field>
+        <field name="perm_create">0</field>
+        <field name="perm_unlink">0</field>
+        <field name="domain_force">[('employee_id.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(6,0,[ref('base.group_portal')])]"/>
+    </record>
+
+    <record id="hr_leave_rule_portal_write_create" model="ir.rule">
+        <field name="name">Portal (Write/Create)</field>
+        <field name="model_id" ref="hr_holidays.model_hr_leave"/>
+        <field name="perm_read">0</field>
+        <field name="perm_write">1</field>
+        <field name="perm_create">1</field>
+        <field name="perm_unlink">0</field>
+        <field name="domain_force">[
+            ('holiday_type', '=', 'employee'),
+            '|',
+                '&amp;',
+                    ('employee_id.user_id', '=', user.id),
+                    ('state', 'not in', ['validate', 'validate1']),
+                '&amp;',
+                    ('validation_type', 'in', ['manager', 'both', 'no_validation']),
+                    ('employee_id.leave_manager_id', '=', user.id),
+        ]</field>
+        <field name="groups" eval="[(6,0,[ref('base.group_portal')])]"/>
+    </record>
+
+    <record id="hr_leave_rule_portal_unlink" model="ir.rule">
+        <field name="name">Portal (Unlink)</field>
+        <field name="model_id" ref="hr_holidays.model_hr_leave"/>
+        <field name="perm_read">0</field>
+        <field name="perm_write">0</field>
+        <field name="perm_create">0</field>
+        <field name="perm_unlink">1</field>
+        <field name="domain_force">[('employee_id.user_id', '=', user.id), ('state', '=', 'draft')]</field>
+        <field name="groups" eval="[(6,0,[ref('base.group_portal')])]"/>
+    </record>
+
+    <record id="hr_leave_rule_portal_approver" model="ir.rule">
+        <field name="name">Portal Approver</field>
+        <field name="model_id" ref="hr_holidays.model_hr_leave"/>
+        <field name="perm_read">1</field>
+        <field name="perm_write">0</field>
+        <field name="perm_create">0</field>
+        <field name="perm_unlink">0</field>
+        <field name="domain_force">[
+                ('employee_id.leave_manager_id', '=', user.id),
+        ]</field>
+        <field name="groups" eval="[(6,0,[ref('base.group_portal')])]"/>
+    </record>
+</odoo>

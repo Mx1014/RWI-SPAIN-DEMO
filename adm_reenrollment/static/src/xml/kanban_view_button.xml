@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template id="template" xml:space="preserve">
+
+    <t t-extend="KanbanView.buttons">
+        <t t-jquery="button" t-operation="before">
+            <t t-if="widget">
+                <t t-if="widget.modelName == 'adm.reenrollment'">
+                    <button class="btn btn-success o_kanban_button_create_reenrollment_records" type="button">CREATE REENROLLMENT RECORDS</button>
+                    <button class="btn btn-success o_kanban_button_create_reenrollment_packages" type="button">CREATE REENROLLMENT PACKAGES</button>
+                </t>
+            </t>
+        </t>
+    </t>
+
+</template>

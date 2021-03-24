@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="adm.template_application_menu_upload_file_comun">
+        <t t-call="adm.template_application_form_commons">
+            <t t-set="head">
+                <link rel="stylesheet" href="/adm/static/src/css/main.css"/>
+                <t t-call-assets="adm.assets_application_family_parents" defer_load="True"/>
+            </t>
+            <t t-set="title">Upload Documents</t>
+
+            <t t-set="url_prev" t-value="'/admission/applications/%s/medical-info' % application_id.id"/>
+            <t t-set="url_next" t-value="'/admission/applications/%s/signature' % application_id.id"/>
+
+            <form class="container-fluid" data-adm-model-fields="1" >
+                <div id="document_list"/>
+            </form>
+        </t>
+    </template>
+</odoo>

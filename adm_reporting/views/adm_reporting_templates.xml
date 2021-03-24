@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Override graphs for Student Reporting-->
+    <template id="web_asset_backend_reporting_ext" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src='/adm_reporting/static/src/js/report.js' />
+        </xpath>
+    </template>
+</odoo>

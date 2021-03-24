@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="assets_backend"  name="Adm Reenrollment assets backend" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/adm_reenrollment/static/src/js/kanban_view_button.js"></script>
+        </xpath>
+    </template>
+
+    <template id="assets_frontend_form" name="Adm Reenrollment assets frontend">
+<!--        <xpath expr="." position="inside">-->
+            <script type="text/javascript" src="/adm_reenrollment/static/src/js/reenrollment.js"/>
+<!--        </xpath>-->
+    </template>
+</odoo>

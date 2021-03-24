@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="workflow_workflow_purchase" model="workflow.workflow">
+        <field name="model_id" ref="purchase.model_purchase_order"/>
+    </record>
+</odoo>

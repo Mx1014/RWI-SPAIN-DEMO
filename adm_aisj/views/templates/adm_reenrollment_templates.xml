@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <template id="template_admission_reenrollment_form_aisj"
+              name="Admission reenrollment form AISJ custom fields"
+              inherit_id="adm_reenrollment.template_admission_reenrollment_form">
+<!--        <xpath expr="//div[@data-adm-model-fields]" position="inside">-->
+<!--            <section class="row">-->
+<!--                <div class="col-12 col-md-6 form-group" data-adm-field="partner_id" data-adm-field-type="MANY2ONE">-->
+<!--                    <label for="student_iqama_document_file" class="label">-->
+<!--                        Copy of the Student's Iqama <span class="text-danger">*</span>-->
+<!--                    </label>-->
+<!--                    <div class="form-upload">-->
+<!--                        <label class="label-upload" for="student_iqama_document_file">-->
+<!--                            <i class="fa fa-upload"></i>-->
+<!--                        </label>-->
+<!--                        <input type="file" id="student_iqama_document_file"-->
+<!--                               data-adm-field="iqama_document_file"/>-->
+<!--                        <input type="hidden" class="js_input_file_name"-->
+<!--                               data-adm-field="iqama_document_file_name"-->
+<!--                               t-att-value="reenrollment_id.student_iqama_document and reenrollment_id.student_iqama_document_name"/>-->
+<!--                        <span class="js_input_file_label">-->
+<!--                            <t t-if="reenrollment_id.student_iqama_document">-->
+<!--                                <t t-esc="reenrollment_id.student_iqama_document_name"/>-->
+<!--                            </t>-->
+<!--                            <t t-else="">-->
+<!--                                No file uploaded-->
+<!--                            </t>-->
+<!--                        </span>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="col-12 col-md-6 form-group" data-adm-field="responsible_user_id" data-adm-field-type="MANY2ONE">-->
+<!--                    <label for="guardian_iqama_document_file" class="label">-->
+<!--                        Copy of the Guardian's Iqama <span class="text-danger">*</span>-->
+<!--                    </label>-->
+<!--                    <div class="form-upload">-->
+<!--                        <label class="label-upload" for="guardian_iqama_document_file">-->
+<!--                            <i class="fa fa-upload"></i>-->
+<!--                        </label>-->
+<!--                        <input type="file" id="guardian_iqama_document_file"-->
+<!--                               data-adm-field="iqama_document_file"/>-->
+<!--                        <input type="hidden" class="js_input_file_name"-->
+<!--                               data-adm-field="iqama_document_file_name"-->
+<!--                               t-att-value="reenrollment_id.guardian_iqama_document and reenrollment_id.guardian_iqama_document_name"/>-->
+<!--                        <span class="js_input_file_label">-->
+<!--                            <t t-if="reenrollment_id.guardian_iqama_document">-->
+<!--                                <t t-esc="reenrollment_id.guardian_iqama_document_name"/>-->
+<!--                            </t>-->
+<!--                            <t t-else="">-->
+<!--                                No file uploaded-->
+<!--                            </t>-->
+<!--                        </span>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--&lt;!&ndash;                <div class="col-12 col-md-6 form-group" data-adm-field="responsible_user_id" data-adm-field-type="MANY2ONE">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <label>Copy of the Guardian's iqama</label>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <input required="required" type="text"&ndash;&gt;-->
+<!--&lt;!&ndash;                           name="street" class="form-control"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                </div>&ndash;&gt;-->
+<!--            </section>-->
+<!--        </xpath>-->
+    </template>
+
+</odoo>

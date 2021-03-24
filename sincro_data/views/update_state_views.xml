@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="update_state_form" model="ir.ui.view">
+            <field name="name">List of Applicants</field>
+            <field name="model">update.state</field>
+            <field name="arch" type="xml">
+                <form>
+                    <field name="default_applications" attrs="{'invisible': [('default_applications', '=', [])]}">
+                        <tree decoration-success="is_success and not is_warning and not is_error"
+                              decoration-warning="is_warning and not is_error" decoration-danger="is_error"
+                              editable="bottom">
+                            <field invisible="1" name="is_success"/>
+                            <field invisible="1" name="is_warning"/>
+                            <field invisible="1" name="is_error"/>
+                            <field invisible="1" name="count_fixed_data"/>
+
+                            <field class="app-name" string="Applicant´s name" name="name"/>
+                            <field string="Result of the tests" name="comment" class="pre-wrap app-comment"/>
+                            <field string="fixed_msg" name="fixed_msg" class="pre-wrap fixed_msg"/>
+                            <field string="fixed_data" name="fixed_data" class="pre-wrap"/>
+
+                            <field context="{'btn_id':0}" name="fixed_1" class="btn-check btn-check-1"
+                                   attrs="{'invisible': [('count_fixed_data', 'in', (0))]}"/>
+                            <field context="{'btn_id':1}" name="fixed_2" class="btn-check btn-check-2"
+                                   attrs="{'invisible': [('count_fixed_data', 'in', (0,1))]}"/>
+                            <field context="{'btn_id':2}" name="fixed_3" class="btn-check btn-check-3"
+                                   attrs="{'invisible': [('count_fixed_data', 'in', (0,1,2))]}"/>
+                            <field context="{'btn_id':3}" name="fixed_4" class="btn-check btn-check-4"
+                                   attrs="{'invisible': [('count_fixed_data', 'in', (0,1,2,3))]}"/>
+                            <field context="{'btn_id':4}" name="fixed_5" class="btn-check btn-check-5"
+                                   attrs="{'invisible': [('count_fixed_data', 'in', (0,1,2,3,4))]}"/>
+                            <field context="{'btn_id':5}" name="fixed_6" class="btn-check btn-check-6"
+                                   attrs="{'invisible': [('count_fixed_data', 'in', (0,1,2,3,4,5))]}"/>
+                            <field context="{'btn_id':6}" name="fixed_7" class="btn-check btn-check-7"
+                                   attrs="{'invisible': [('count_fixed_data', 'in', (0,1,2,3,4,5,6))]}"/>
+                            <field context="{'btn_id':7}" name="fixed_8" class="btn-check btn-check-8"
+                                   attrs="{'invisible': [('count_fixed_data', 'in', (0,1,2,3,4,5,6,7))]}"/>
+                            <field context="{'btn_id':8}" name="fixed_9" class="btn-check btn-check-9"
+                                   attrs="{'invisible': [('count_fixed_data', 'in', (0,1,2,3,4,5,6,7,8))]}"/>
+<!--                            <button string="FIXED ALL" class="btn-sm btn-secondary" name="fixed_application"-->
+<!--                                    type="object" />-->
+                            <!--                            <button string="1-js" class="btn-sm btn-secondary fix_btn" value="1"/>-->
+                            <!--                            <button string="1" class="btn-sm btn-secondary" name="one_fixed_application"-->
+                            <!--                                    context="{'btn_id':1}" type="object"/>-->
+                            <!--                            <button string="2" class="btn-sm btn-secondary" name="one_fixed_application"-->
+                            <!--                                    context="{'btn_id':2}" type="object"/>-->
+                            <!--                            <button string="3" class="btn-sm btn-secondary" name="one_fixed_application"-->
+                            <!--                                    context="{'btn_id':3}" type="object"/>-->
+                            <!--                            <button string="4" class="btn-sm btn-secondary" name="one_fixed_application"-->
+                            <!--                                    context="{'btn_id':4}" type="object"/>-->
+                            <!--                            <button string="5" class="btn-sm btn-secondary" name="one_fixed_application"-->
+                            <!--                                    context="{'btn_id':5}" type="object"/>-->
+                            <!--                            <button string="6" class="btn-sm btn-secondary" name="one_fixed_application"-->
+                            <!--                                    context="{'btn_id':6}" type="object"/>-->
+                            <!--                            <button string="7" class="btn-sm btn-secondary" name="one_fixed_application"-->
+                            <!--                                    context="{'btn_id':7}" type="object"/>-->
+                            <!--                            <button string="8" class="btn-sm btn-secondary" name="one_fixed_application"-->
+                            <!--                                    context="{'btn_id':8}" type="object"/>-->
+
+                        </tree>
+                    </field>
+                    <field name="default_reenrollments" attrs="{'invisible': [('default_reenrollments', '=', [])]}">
+                        <tree decoration-success="is_success and not is_warning and not is_error"
+                              decoration-warning="is_warning and not is_error" decoration-danger="is_error"
+                              create="0">
+                            <field invisible="1" name="is_success"/>
+                            <field invisible="1" name="is_warning"/>
+                            <field invisible="1" name="is_error"/>
+                            <field string="Reenrollment student´s name" name="name"/>
+                            <field string="Result of the tests" name="comment" class="pre-wrap"/>
+                        </tree>
+                    </field>
+                    <footer>
+                        <button class="btn btn-success" name="update_state_application"
+                                attrs="{'invisible': [('default_applications', '=', [])]}" string="Update"
+                                type="object"/>
+                        <button class="btn btn-success" name="update_state_reenrollment"
+                                attrs="{'invisible': [('default_reenrollments', '=', [])]}" string="Update"
+                                type="object"/>
+                        <button string="Cancel" class="btn btn-danger" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+    <!--        <act_window name="Update State"-->
+    <!--                    id="update_state_action"-->
+    <!--                    res_model="update.state"-->
+    <!--                    binding_model="adm.application"-->
+    <!--                    binding_views="form"-->
+    <!--                    view_mode="form"-->
+    <!--                    target="new"-->
+    <!--        />-->
+    <!--    <act_window name="Make sale"-->
+    <!--                res_model="res.partner.make.sale"-->
+    <!--                binding_model="res.partner"-->
+    <!--                binding_views="list"-->
+    <!--                view_mode="form"-->
+    <!--                target="new"-->
+    <!--                id="action_partner_make_sale"/>-->
+
+    <act_window name="Export to FACTS (Applications)"
+                id="update_state_application_action"
+                res_model="update.state"
+                binding_model="adm.application"
+                binding_views="list,tree,form"
+                view_mode="form"
+                target="new"
+    />
+
+    <act_window name="Export to FACTS (Reenrollments)"
+                id="update_state_reenrollment_action"
+                res_model="update.state"
+                binding_model="adm.reenrollment"
+                binding_views="list,tree,form"
+                view_mode="form"
+                target="new"
+    />
+
+</odoo>
+
+

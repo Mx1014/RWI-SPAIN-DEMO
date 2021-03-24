@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="adm_reenrollment_view_form_inherit_aisj" model="ir.ui.view">
+        <field name="name">adm.reenrollment.view.form.inherit.aisj</field>
+        <field name="model">adm.reenrollment</field>
+        <field name="inherit_id" ref="adm_reenrollment.adm_reenrollment_view_form"/>
+        <field name="arch" type="xml">
+            <page name="documentation" position="inside">
+                <group>
+                    <group>
+                        <field name="student_iqama_document" filename="student_iqama_document_name"/>
+                        <field name="student_iqama_document_name" invisible="1" />
+                    </group>
+                    <group>
+                        <field name="guardian_iqama_document" filename="guardian_iqama_document_name"/>
+                        <field name="guardian_iqama_document_name" invisible="1" />
+                    </group>
+                </group>
+            </page>
+        </field>
+    </record>
+
+</odoo>

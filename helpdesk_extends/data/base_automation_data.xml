@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="helpdesk_ticket_automation_notify_team_members" model="base.automation">
+        <field name="name">Helpdesk Ticket: Notify Team Members</field>
+        <field name="model_id" ref="helpdesk.model_helpdesk_ticket"/>
+        <field name="trigger">on_create</field>
+        <field name="state">code</field>
+        <field name="code">
+if record.team_id:
+    record.message_subscribe(record.team_id.member_ids.partner_id.ids)
+    env.ref("helpdesk_extends.helpdesk_ticket_mail_template_ticket_created").send_mail(record.id, force_send=True)
+        </field>
+    </record>
+</odoo>

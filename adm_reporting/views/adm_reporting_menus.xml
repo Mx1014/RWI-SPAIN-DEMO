@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <menuitem id="adm_menu_reporing_inquiry" name="Inquiry" sequence="1"
+        parent="adm.adm_menu_reporting" action="adm_inquiry_dashboard_action"/>
+
+    <menuitem id="adm_menu_reporting_application" name="Application" sequence="2"
+        parent="adm.adm_menu_reporting" action="adm_application_action_dashboard"/>
+
+</odoo>

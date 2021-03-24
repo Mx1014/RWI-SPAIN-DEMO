@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="application_graph_view" model="ir.ui.view">
+		<field name="name">adm.application.graph.view</field>
+		<field name="model">adm.application</field>
+		<field name="arch" type="xml">
+			<graph string="Application">
+				<!-- <field name="activity_date_deadline" interval="month" type="row"/> -->
+				<field name="status_id" type="row"/>
+			</graph>
+		</field>
+	</record>
+
+	<record id="adm_appplication_dashboard_view" model="ir.ui.view">
+		<field name="name">adm.application.dashboard.view</field>
+		<field name="model">adm.application</field>
+		<field name="mode">primary</field>
+		<field name="arch" type="xml">
+			<dashboard>
+				<view type="graph" ref="adm_reporting.application_graph_view"/>
+				<group>
+					<group>
+						<aggregate name="application" string="Application" group_operator="count" field="id" measure="__count__"/>
+						<aggregate name="gpa" string="GPA" field="gpa" group_operator="avg" value_label="Avg GPA"/>
+					</group>
+					<group col="1">
+						<widget name="pie_chart" title="Citizenship" attrs="{'groupby': 'citizenship'}"/>
+						<widget name="pie_chart" title="Status" attrs="{'groupby': 'status_id'}"/>
+<!--						<widget name="pie_chart" title="Gender" attrs="{'groupby': 'gender'}"/>-->
+					</group>
+				</group>
+				<view type="pivot" ref="adm_reporting.application_pivot_view"/>
+				<!--<view type="cohort" ref="crm_enterprise.crm_lead_view_cohort"/> -->
+			</dashboard>
+		</field>
+	</record>
+
+	<record id="adm_application_view_gantt" model="ir.ui.view">
+	    <field name="name">adm.application.view.gantt</field>
+	    <field name="model">adm.application</field>
+	    <field name="arch" type="xml">
+	        <gantt date_start="create_date" date_stop="finish_datetime"/>
+	    </field>
+	</record>
+
+	<record id="application_pivot_view" model="ir.ui.view">
+		<field name="name">adm.application.pivot.view</field>
+		<field name="model">adm.application</field>
+		<field name="arch" type="xml">
+			<pivot string="Applications" display_quantity="true">
+				<field name="create_date" interval="month" type="row"/>
+				<field name="status_id" type="col"/>
+			</pivot>
+		</field>
+	</record>
+
+	<record id="adm_application_action_dashboard" model="ir.actions.act_window">	
+		<field name="name">Applications</field>
+		<field name="res_model">adm.application</field>
+		<field name="view_mode">dashboard,pivot,graph,tree,form,gantt</field>
+	</record>
+
+	<record id="adm_application_action_dashboard_dashboard" model="ir.actions.act_window.view">
+		<field name="sequence" eval="1"/>
+		<field name="view_mode">dashboard</field>
+		<field name="view_id" ref="adm_appplication_dashboard_view"/>
+		<field name="act_window_id" ref="adm_application_action_dashboard"/>
+	</record>
+
+	<!-- <record id="adm_application_action_dashboard_pivot" model="ir.action.act_window.view">
+		<field name="sequence" eval="2"/>
+		<field name="view_mode">pivot</field>
+		<field name="view_id" ref="adm_appplication_dashboard_view"/>
+		<field name="action_window_id" ref="adm_application_action_dashboard"/>
+	</record> -->
+
+	<!--record id="adm_application_action_dashboard_graph" model="ir.action.act_window.view">
+		<field name="sequence" eval="3"/>
+		<field name="view_mode">graph</field>
+		<field name="view_id" ref="adm_appplication_dashboard_view"/>
+		<field name="action_window_id" ref="adm_application_action_dashboard"/>
+	</record>
+
+	<record id="adm_application_action_dashboard_cohort" model="ir.action.act_window.view">
+		<field name="sequence" eval="4"/>
+		<field name="view_mode">cohort</field>
+		<field name="view_id" ref="adm_appplication_dashboard_view"/>
+		<field name="action_window_id" ref="adm_application_action_dashboard"/>
+	</record>
+
+	<record id="adm_application_action_dashboard_tree" model="ir.action.act_window.view">
+		<field name="sequence" eval="5"/>
+		<field name="view_mode">tree</field>
+		<field name="view_id" ref="adm_appplication_dashboard_view"/>
+		<field name="action_window_id" ref="adm_application_action_dashboard"/>
+	</record> -->
+
+</odoo>

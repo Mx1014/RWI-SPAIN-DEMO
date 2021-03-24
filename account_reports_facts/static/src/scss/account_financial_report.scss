@@ -1,0 +1,13 @@
+.o_account_reports_page {
+    .o_account_report_column_header {
+        white-space: normal;
+    }
+
+    .o_account_reports_table {
+        .nomargin {
+            .o_account_report_column_value {
+                margin-left: 15px !important;
+            }
+        }
+    }
+}

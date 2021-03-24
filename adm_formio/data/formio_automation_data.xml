@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="adm_application_formio_automation_teacher_assessment_pk" model="formio.automation">
+            <field name="model_id" ref="adm.model_adm_application"/>
+            <!--        <field name="object_form_field_id" ref="field_adm_application__teacher_assessment_form_id"/>-->
+            <!--        <field name="mail_template_id" ref="adm_application_mail_template_teacher_assessment"/>-->
+        </record>
+
+        <record id="formio_automation_mapping_name_pk" model="formio.automation.mapping">
+            <field name="form_field_key">nameOfApplicant</field>
+            <field name="object_field_name">partner_id.name</field>
+            <field name="automation_id" ref="adm_application_formio_automation_teacher_assessment_pk"/>
+        </record>
+
+        <record id="formio_automation_mapping_grade_level_pk" model="formio.automation.mapping">
+            <field name="form_field_key">applyingForGrade</field>
+            <field name="object_field_name">grade_level.name</field>
+            <field name="automation_id" ref="adm_application_formio_automation_teacher_assessment_pk"/>
+        </record>
+
+        <record id="adm_application_formio_automation_teacher_assessment_2" model="formio.automation">
+            <field name="model_id" ref="adm.model_adm_application"/>
+            <!--        <field name="object_form_field_id" ref="field_adm_application__teacher_assessment_form_id"/>-->
+            <!--        <field name="mail_template_id" ref="adm_application_mail_template_teacher_assessment"/>-->
+        </record>
+
+        <record id="formio_automation_mapping_name_2" model="formio.automation.mapping">
+            <field name="form_field_key">nameOfApplicant</field>
+            <field name="object_field_name">partner_id.name</field>
+            <field name="automation_id" ref="adm_application_formio_automation_teacher_assessment_2"/>
+        </record>
+
+        <record id="formio_automation_mapping_grade_level_2" model="formio.automation.mapping">
+            <field name="form_field_key">applyingForGrade</field>
+            <field name="object_field_name">grade_level.name</field>
+            <field name="automation_id" ref="adm_application_formio_automation_teacher_assessment_2"/>
+        </record>
+    </data>
+</odoo>

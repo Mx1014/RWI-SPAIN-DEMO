@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="external_layout_background_inherit" inherit_id="web.external_layout_background">
+        <xpath expr="//div[contains(@t-attf-class, 'header')]" position="replace">
+            <div class="header">
+                    <div class="float-right">
+                        <h3 class="mt0 text-right" t-field="company.report_header"/>
+                    </div>
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" class="float-left" alt="Logo" style="max-height:100px;"/>
+                    <div class="float-left company_address">
+                        <div  style="color: #263977">
+                            <strong>
+                                AMERICAN<br/>
+                                INTERNATIONAL<br/>
+                                SCHOOL OF JEDDAH
+                            </strong>
+                        </div>
+                    </div>
+                    <div class="float-right company_address"  style="color: #263977">
+                        <br></br>
+                        | Excellence in the Pursuit of Dreams
+                    </div>
+                    <div class="clearfix mb8"/>
+            </div>
+        </xpath>
+        <xpath expr="//div[contains(@t-attf-class, 'footer')]" position="replace">
+            <div class="footer o_background_footer">
+                <div class="text-center">
+                    <ul class="list-inline" style="
+                        border-top: 1px solid #e9ecef;
+                        border-bottom: 1px solid #e9ecef;
+                        padding: 4px 0;
+                        margin: 0 0 4px 0;
+                        color: red;
+                    " t-if="o and o._name == 'account.move' and o.type in ['out_invoice','in_refund']">
+                        <li style="color: #5d5d5d"><b>Make a Bank Transfer to our account in Saudi Arabia British Bank (SABB)</b></li>
+                        <li style="color: #5d5d5d">Account Name: American International School of Jeddah    -   IBAN: SA47 4500 0000 0780 1030 3001</li>
+                        <li style="color: #5d5d5d">Account No.                   078-010303-001</li>
+                    </ul>
+                    <div t-field="company.report_footer"/>
+                    <div t-if="report_type == 'pdf'" class="text-muted">
+                        Page:
+                        <span class="page"/>
+                        of
+                        <span class="topage"/>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

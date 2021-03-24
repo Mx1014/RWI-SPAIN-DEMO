@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<!--    <record id="adm_application_automation_teacher_assessment" model="base.automation">-->
+<!--        <field name="name">Application: Send Teacher Assessment Form</field>-->
+<!--        <field name="model_id" ref="adm.model_adm_application"/>-->
+<!--        <field name="trigger">on_write</field>-->
+<!--        <field name="trigger_field_ids" eval="[(6,0,[ref('adm_formio.field_adm_application__teacher_assessment_email')])]"/>-->
+<!--        <field name="filter_domain">[('teacher_assessment_email','!=',False)]</field>-->
+<!--        <field name="state">code</field>-->
+<!--        <field name="code">-->
+<!--if not record.grade_level:-->
+<!--    raise Warning("No grade level set for application!")-->
+
+<!--level = 0-->
+<!--try:-->
+<!--    level = int(record.grade_level.name)-->
+<!--except:-->
+<!--    pass-->
+
+<!--if level >= 2:-->
+<!--    env["formio.automation"].process(record, "adm_formio.adm_application_formio_automation_teacher_assessment_2")-->
+<!--else:-->
+<!--    env["formio.automation"].process(record, "adm_formio.adm_application_formio_automation_teacher_assessment_pk")-->
+<!--        </field>-->
+<!--    </record>-->
+</odoo>

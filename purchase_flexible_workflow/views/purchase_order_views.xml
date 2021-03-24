@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="purchase_order_view_form_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.view.form.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_title')]" position="after">
+                <field name="prev_workflow_stage_id" invisible="1"/>
+                <field name="next_workflow_stage_id" invisible="1"/>
+                <div>
+                    <label for="workflow_stage_id" string="Stage:"/>
+                    <field name="workflow_stage_id" readonly="1" options="{'no_open': 1}"/>
+                </div>
+            </xpath>
+            <button name="button_unlock" position="after">
+                <button string="Prev Stage" type="object" class="btn-danger" name="action_prev_workflow_stage"
+                    attrs="{'invisible': [('prev_workflow_stage_id','=',False)]}"/>
+                <button string="Next Stage" type="object" class="btn-success" name="action_next_workflow_stage"
+                    attrs="{'invisible': [('next_workflow_stage_id','=',False)]}"/>
+            </button>
+        </field>
+    </record>
+</odoo>

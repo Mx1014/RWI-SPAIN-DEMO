@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_expense_view_form_inherit" model="ir.ui.view">
+        <field name="name">hr.expense.view.form.inherit</field>
+        <field name="model">hr.expense</field>
+        <field name="inherit_id" ref="hr_expense.hr_expense_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//label[@for='payment_mode']/.." position="after">
+                <group string="Advance" attrs="{'invisible': [('payment_mode','!=','company_account')]}">
+                    <field name="advance_id"/>
+                    <field name="supplier_id" attrs="{'required': [('advance_id','!=',False)], 'invisible': [('advance_id','=',False)]}"/>
+                    <label for="advance_expense_bill_id" attrs="{'invisible': [('advance_id','=',False)]}"/>
+                    <div attrs="{'invisible': [('advance_id','=',False)]}">
+                        <button name="action_create_advance_expense_bill" type="object" string="Create Bill" class="btn btn-primary oe_inline"
+                            attrs="{'invisible': ['|',('advance_expense_bill_id','!=',False),('state','not in',['approved','done'])]}"
+                            groups="account.group_account_manager"/>
+                        <field name="advance_expense_bill_id" nolabel="1" class="oe_inline"
+                            attrs="{'invisible': [('advance_expense_bill_id','=',False)]}"/>
+                    </div>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

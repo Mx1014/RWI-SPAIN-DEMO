@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_adm_aisj_additional_support,access_adm_aisj_additional_support,model_adm_aisj_additional_support,base.group_user,1,1,1,1
+access_adm_aisj_interested_options,access_adm_aisj_interested_options,model_adm_aisj_interested_options,base.group_user,1,1,1,1
+access_adm_aisj_applicant_programs,access_adm_aisj_applicant_programs,model_adm_aisj_applicant_programs,base.group_user,1,1,1,1
+access_adm_aisj_how_hear_about_us,access_adm_aisj_how_hear_about_us,model_adm_aisj_how_hear_about_us,base.group_user,1,1,1,1

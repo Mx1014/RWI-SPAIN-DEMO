@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_my_home_menu_purchase_request" name="Portal layout: purchase_request menu entry" inherit_id="portal.portal_breadcrumbs" priority="50">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'purchase_request' or purchase_request or create_purchase_request" t-attf-class="breadcrumb-item #{'active ' if not (purchase_request and create_purchase_request) else ''}">
+                <a t-if="purchase_request or create_purchase_request" t-attf-href="/my/purchase_request?{{ keep_query() }}">Purchase Requests</a>
+                <t t-else="">Purchase Requests</t>
+            </li>
+            <li t-if="purchase_request" class="breadcrumb-item active">
+                <span t-field="purchase_request.name"/>
+            </li>
+            <li t-if="create_purchase_request" class="breadcrumb-item active">
+                New
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_purchase_request" name="Portal My Home : purchase_request entry" inherit_id="portal.portal_my_home" priority="50">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-if="user.employee_ids" t-call="portal.portal_docs_entry">
+                <t t-set="title">Purchase Requests</t>
+                <t t-set="url" t-value="'/my/purchase_request'"/>
+                <t t-set="count" t-value="purchase_request_count"/>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="portal_my_purchase_requests" name="My Purchase Requests">
+        <t t-call="portal.portal_layout">
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Purchase Requests</t>
+            </t>
+            <div class="mb4">
+                <a t-attf-href="/my/purchase_request/create?{{ keep_query() }}" class="btn btn-primary">Create Request</a>
+            </div>
+            <t t-if="not purchase_requests">
+                <p>There are no purchase requests found.</p>
+            </t>
+            <t t-if="purchase_requests" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>Order #</th>
+                        <th>Create Date</th>
+                        <th>Vendor</th>
+                        <th>Total</th>
+                        <th>Stage</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="purchase_requests" t-as="purchase_request">
+                        <td>
+                            <a t-attf-href="/my/purchase_request/#{purchase_request.id}?{{ keep_query() }}"><span t-field="purchase_request.name"/></a>
+                        </td>
+                        <td><span t-field="purchase_request.create_date"/></td>
+                        <td><span t-field="purchase_request.partner_id"/></td>
+                        <td><span t-field="purchase_request.amount_total"/></td>
+                        <td><span t-field="purchase_request.workflow_stage_id"/></td>
+                        <td>
+                            <span t-if="purchase_request.state in ['draft','sent']" class="badge badge-danger">RFQ</span>
+                            <span t-if="purchase_request.state in ['to approve']" class="badge badge-danger">To Approve</span>
+                            <span t-if="purchase_request.state in ['purchase','done']" class="badge badge-success">Confirmed</span>
+                            <span t-if="purchase_request.state == 'cancel'" class="badge" style="background:lightgray;">Cancelled</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </t>
+        </t>
+    </template>
+
+    <template id="portal_my_purchase_request" name="My Canteen Order">
+        <t t-call="portal.portal_layout">
+            <div class="container">
+                <form action="/my/purchase_request/save" method="post">
+                    <div class="card o_purchase_request_portal_form">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-8">
+                                    <h4 class="mb0">
+                                        <t t-if="purchase_request">
+                                            <span t-field="purchase_request.name"/>
+                                        </t>
+                                        <t t-else="">New</t>
+                                        <span t-if="purchase_request.state in ['draft','sent']" class="badge badge-danger">RFQ</span>
+                                        <span t-if="purchase_request.state in ['to approve']" class="badge badge-danger">To Approve</span>
+                                        <span t-if="purchase_request.state in ['purchase','done']" class="badge badge-success">Confirmed</span>
+                                        <span t-if="purchase_request.state == 'cancel'" class="badge" style="background:lightgray;">Cancelled</span>
+                                    </h4>
+                                    <div>
+                                        <strong>Stage:</strong> <span t-field="purchase_request.workflow_stage_id"/>
+                                    </div>
+                                    <div class="mt-1">
+                                        <button t-if="not readonly" type="submit" class="btn btn-primary mr4">Save</button>
+                                        <a t-if="readonly and purchase_request.state in ['draft','sent']" t-attf-href="/my/purchase_request/#{purchase_request.id}/edit?{{ keep_query() }}" class="btn btn-primary mr4">Edit</a>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4 text-right">
+                                    <a t-if="readonly and purchase_request.state in ['draft','sent'] and purchase_request.prev_workflow_stage_id" t-attf-href="/my/purchase_request/#{purchase_request.id}/prev_stage?{{ keep_query() }}" class="btn btn-danger ml4">Prev Stage</a>
+                                    <a t-if="readonly and purchase_request.state in ['draft','sent'] and purchase_request.next_workflow_stage_id" t-attf-href="/my/purchase_request/#{purchase_request.id}/next_stage?{{ keep_query() }}" class="btn btn-success ml4">Next Stage</a>
+                                    <a t-if="readonly and purchase_request.state in ['draft','sent']" t-attf-href="/my/purchase_request/#{purchase_request.id}/cancel?{{ keep_query() }}" class="btn btn-danger ml4">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <input type="hidden" name="id" t-att-value="purchase_request.id"/>
+                            <div class="mb32">
+                                <div class="row mb8">
+                                    <div class="col-sm-12 col-md-3 col-lg-2"><label for="partner_id">Vendor *</label></div>
+                                    <div class="col-sm-12 col-md-9 col-lg-10">
+                                        <select name="partner_id" id="partner_id" required="true" class="form-control o_purchase_request_portal_form_partner_id" t-att-disabled="readonly">
+                                            <option value="">--- Vendor ---</option>
+                                            <t t-foreach="vendors" t-as="vendor">
+                                                <option t-att-selected="vendor == purchase_request.partner_id" t-att-value="vendor.id" t-esc="vendor.name"/>
+                                            </t>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb8">
+                                    <div class="col-sm-12 col-md-3 col-lg-2">
+                                        <label for="partner_id">
+                                            Budget
+                                            <t t-if="request.env.user.purchase_require_budget">*</t>
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-9 col-lg-10">
+                                        <select name="budget_id" id="budget_id" t-att-required="request.env.user.purchase_require_budget" class="form-control o_purchase_request_portal_form_budget_id" t-att-disabled="readonly">
+                                            <option value="">--- Budget ---</option>
+                                            <t t-foreach="budgets" t-as="budget">
+                                                <option t-att-selected="budget == purchase_request.budget_id" t-att-value="budget.id" t-esc="budget.name"/>
+                                            </t>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div t-if="purchase_request" class="row mb8">
+                                    <div class="col-sm-12 col-md-3 col-lg-2"><label for="purchase_request_date">Create Date</label></div>
+                                    <div class="col-sm-12 col-md-9 col-lg-10">
+                                        <span t-field="purchase_request.create_date"/>
+                                    </div>
+                                </div>
+                                <div t-field="purchase_request.sudo().budget_warning_message"/>
+                                <h4 class="mt32">Items</h4>
+                                <div class="row">
+                                    <div class="col-md-3 d-none d-md-block"><label>Item</label></div>
+                                    <div class="col-md-3 d-none d-md-block"><label>Budget Pos.</label></div>
+                                    <div class="col-md-2 d-none d-md-block"><label>Quantity</label></div>
+                                    <div t-att-class="('col-4 col-md-2' if readonly else 'col-3 col-md-1') + ' d-none d-md-block text-right'"><label>Unit Price</label></div>
+                                    <div t-att-class="('col-4 col-md-2' if readonly else 'col-3 col-md-2') + ' d-none d-md-block text-right'"><label>Subtotal</label></div>
+                                </div>
+                                <div class="o_purchase_request_portal_form_lines">
+                                    <div class="row mb8" t-if="not purchase_request" id="line_0">
+                                        <input type="hidden" name="line_id_0" id="line_id_0" value="0"/>
+                                        <div class="col-12 col-md-3 mb8">
+                                            <select name="product_id_0" id="product_id_0" required="true" class="form-control o_purchase_request_portal_form_product_id">
+                                                <option value="">--- Item ---</option>
+                                                <t t-foreach="products" t-as="product">
+                                                    <option t-att-value="product.id" t-esc="product.name"/>
+                                                </t>
+                                            </select>
+                                        </div>
+                                        <div class="col-12 col-md-3 mb8">
+                                            <select name="budget_post_id_0" id="budget_post_id_0" t-att-required="request.env.user.purchase_require_budget" class="form-control">
+                                                <option value="">--- Pos. ---</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-4 col-md-2">
+                                            <input type="number" step="0.01" name="product_qty_0" id="product_qty_0" class="form-control o_purchase_request_portal_form_product_qty" required="true"/>
+                                        </div>
+                                        <div t-att-class="('col-4 col-md-2' if readonly else 'col-3 col-md-1') + ' o_purchase_request_portal_form_price_unit_text text-right'" id="price_unit_text_0">-</div>
+                                        <input class="o_purchase_request_portal_form_price_unit" type="hidden" name="price_unit_0" id="price_unit_0" value="-"/>
+                                        <div t-att-class="('col-4 col-md-2' if readonly else 'col-3 col-md-2') + ' o_purchase_request_portal_form_price_subtotal text-right'" id="price_subtotal_0">-</div>
+                                        <div t-if="not readonly" class="col-2 col-md-1">
+                                            <button type="button" class="btn btn-danger w-100 o_purchase_request_portal_form_remove_line">-</button>
+                                        </div>
+                                    </div>
+                                    <t t-else="">
+                                        <t t-foreach="purchase_request.order_line" t-as="line">
+                                            <div class="row mb8" t-att-id="'line_' + str(line_index)">
+                                                <input type="hidden" t-att-name="'line_id_' + str(line_index)" t-att-id="'line_id_' + str(line_index)" t-att-value="line.id"/>
+                                                <div class="col-12 col-md-3 mb8">
+                                                    <select t-att-name="'product_id_' + str(line_index)" t-att-id="'product_id_' + str(line_index)" required="true" t-att-disabled="readonly"
+                                                        class="form-control o_purchase_request_portal_form_product_id">
+                                                        <option value="">--- Item ---</option>
+                                                        <t t-foreach="products" t-as="product">
+                                                            <option t-att-selected="product == line.product_id" t-att-value="product.id" t-esc="product.name"/>
+                                                        </t>
+                                                    </select>
+                                                </div>
+                                                <div class="col-12 col-md-3 mb8">
+                                                    <select t-att-name="'budget_post_id_' + str(line_index)" t-att-id="'budget_post_id_' + str(line_index)" t-att-required="request.env.user.purchase_require_budget"
+                                                        t-att-disabled="readonly" class="form-control">
+                                                        <option value="">--- Pos. ---</option>
+                                                        <t t-foreach="budget_posts" t-as="budget_post">
+                                                            <option t-att-selected="budget_post == line.budget_post_id" t-att-value="budget_post.sudo().id" t-esc="budget_post.sudo().name"/>
+                                                        </t>
+                                                    </select>
+                                                </div>
+                                                <div class="col-4 col-md-2">
+                                                    <input type="number" step="0.01" t-att-name="'product_qty_' + str(line_index)" t-att-id="'product_qty_' + str(line_index)"
+                                                        class="form-control o_purchase_request_portal_form_product_qty" required="true" t-att-disabled="readonly" t-att-value="line.product_qty"/>
+                                                </div>
+                                                <div t-att-class="('col-4 col-md-2' if readonly else 'col-3 col-md-1') + ' o_purchase_request_portal_form_price_unit_text text-right'" t-att-id="'price_unit_text_' + str(line_index)"><t t-esc="line.price_unit"/></div>
+                                                <input class="o_purchase_request_portal_form_price_unit" type="hidden" t-att-name="'price_unit_' + str(line_index)" t-att-id="'price_unit_' + str(line_index)" t-att-value="line.price_unit or '0'"/>
+                                                <div t-att-class="('col-4 col-md-2' if readonly else 'col-3 col-md-2') + ' o_purchase_request_portal_form_price_subtotal text-right'" t-att-id="'price_subtotal_' + str(line_index)"><t t-esc="line.price_unit * line.product_qty"/></div>
+                                                <div t-if="not readonly" class="col-2 col-md-1">
+                                                    <button type="button" class="btn btn-danger w-100 o_purchase_request_portal_form_remove_line">-</button>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </t>
+                                </div>
+                                <button t-if="not readonly" type="button" class="btn btn-success col-12 mt8 o_purchase_request_portal_form_add_line">Add Item</button>
+                            </div>
+                            <div t-if="readonly" id="total" class="row" name="total">
+                                <div class="col-12 col-md-6 col-lg-4 ml-auto">
+                                    <table class="table table-sm">
+                                        <tr>
+                                            <td>Subtotal</td>
+                                            <td class="text-right">
+                                                <span t-field="purchase_request.amount_untaxed"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tax</td>
+                                            <td class="text-right">
+                                                <span t-field="purchase_request.amount_tax"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Total</strong></td>
+                                            <td class="text-right">
+                                                <span t-field="purchase_request.amount_total"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </t>
+    </template>
+</odoo>

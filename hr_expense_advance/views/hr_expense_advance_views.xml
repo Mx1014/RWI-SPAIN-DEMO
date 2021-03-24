@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_expense_advance_view_form" model="ir.ui.view">
+        <field name="name">hr.expense.advance.view.form</field>
+        <field name="model">hr.expense.advance</field>
+        <field name="arch" type="xml">
+            <form string="Advance Form">
+                <header>
+                    <button string="Submit to Manager" name="action_submit" type="object" class="oe_highlight" states="draft"/>
+                    <button string="Approve" name="action_approve" type="object" class="oe_highlight" states="submit"
+                        groups="hr_expense.group_hr_expense_team_approver"/>
+                    <button string="Create Releasing Bill" name="action_create_release_bill" type="object" class="oe_highlight"
+                        attrs="{'invisible': ['|',('payment_state','!=','to_release'),('release_bill_id','!=',False)]}"
+                        groups="account.group_account_manager"/>
+                    <button string="Create Closing Bill" name="action_create_close_bill" type="object" class="oe_highlight"
+                        attrs="{'invisible': ['|',('payment_state','!=','to_close'),('close_bill_id','!=',False)]}"
+                        groups="account.group_account_manager"/>
+                    <button string="Refuse" name="action_cancel" type="object" groups="hr_expense.group_hr_expense_team_approver"
+                        attrs="{'invisible': ['|',('state','not in',['submit','approve']),('release_bill_id','!=',False)]}"/>
+                    <button string="Reset to Draft" name="action_draft" type="object"
+                        attrs="{'invisible': ['|',('state','not in',['submit','cancel']),('can_reset','=',False)]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submit,approve"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="To Release" bg_color="bg-warning" attrs="{'invisible': [('payment_state','!=','to_release')]}"/>
+                    <widget name="web_ribbon" title="To Close" bg_color="bg-warning" attrs="{'invisible': [('payment_state','!=','to_close')]}"/>
+                    <widget name="web_ribbon" title="Closed" bg_color="bg-success" attrs="{'invisible': [('payment_state','!=','close')]}"/>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Customer Site Visit"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="employee_id"/>
+                            <field name="user_id" attrs="{'readonly': [('state','not in',['draft','submit'])]}"/>
+                        </group>
+                        <group>
+                            <field name="currency_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="estimates_expenses" string="Estimates and Expenses">
+                            <separator string="Estimates"/>
+                            <field name="line_ids">
+                                <tree editable="bottom">
+                                    <field name="name"/>
+                                    <field name="estimated_amount"/>
+                                </tree>
+                            </field>
+                            <separator string="Expenses"/>
+                            <field name="expense_ids">
+                                <tree decoration-muted="state not in ['approved','done']">
+                                    <field name="date"/>
+                                    <field name="name"/>
+                                    <field name="supplier_id"/>
+                                    <field name="product_id"/>
+                                    <field name="account_id" optional="hide"/>
+                                    <field name="state"/>
+                                    <field name="total_amount"/>
+                                    <field name="advance_expense_bill_id" widget="many2onebutton"/>
+                                    <button string="Create Bill" name="action_create_advance_expense_bill" type="object" class="oe_highlight"
+                                        attrs="{'invisible': ['|',('advance_expense_bill_id','!=',False),('state','not in',['approved','done'])]}"
+                                        groups="account.group_account_manager"/>
+                                    <field name="state" invisible="1"/>
+                                </tree>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right" colspan="2" name="total">
+                                <field name="total_estimated_amount"/>
+                                <field name="total_expensed_amount"/>
+                                <field name="total_remaining_amount" class="oe_subtotal_footer_separator"/>
+                            </group>
+                        </page>
+                        <page name="accounting" string="Accounting">
+                            <group>
+                                <group>
+                                    <field name="journal_id" attrs="{'readonly': [('release_bill_id','!=',False)]}"/>
+                                    <field name="product_id" attrs="{'readonly': [('release_bill_id','!=',False)]}"/>
+                                </group>
+                                <group>
+                                    <field name="payment_state"/>
+                                    <field name="release_bill_id"/>
+                                    <field name="close_bill_id"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+                <field name="can_reset" invisible="1"/>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_expense_advance_view_tree" model="ir.ui.view">
+        <field name="name">hr.expense.advance.view.tree</field>
+        <field name="model">hr.expense.advance</field>
+        <field name="arch" type="xml">
+            <tree string="Advance Tree">
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="user_id"/>
+                <field name="total_estimated_amount"/>
+                <field name="state" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="hr_expense_advance_view_search" model="ir.ui.view">
+        <field name="name">hr.expense.advance.view.search</field>
+        <field name="model">hr.expense.advance</field>
+        <field name="arch" type="xml">
+            <search string="Advance Search">
+                <field name="name"/>
+                <field name="employee_id"/>
+                <filter string="My Advances" name="my_advances" domain="[('employee_id.user_id','=',uid)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="group_by_status" domain="[]" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="hr_expense_advance_action" model="ir.actions.act_window">
+        <field name="name">My Advances</field>
+        <field name="res_model">hr.expense.advance</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{'search_default_my_advances': 1}</field>
+    </record>
+
+    <menuitem
+        id="hr_expense_advance_menu"
+        name="My Advances"
+        action="hr_expense_advance_action"
+        parent="hr_expense.menu_hr_expense_root"
+        sequence="3"/>
+</odoo>

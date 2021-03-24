@@ -1,0 +1,82 @@
+.pre-wrap{
+    white-space: pre-wrap !important;
+}
+
+.opacity-0{
+    opacity: 0 !important;
+}
+/*
+.app-name{
+width:125px !important;
+   max-width:125px;
+}
+.app-comment{
+   width:300px !important;
+   max-width:300px;
+}
+.fixed_msg{
+   width:250px !important;
+   max-width:250px;
+}*/
+
+th[data-name^=fixed_1],th[data-name^=fixed_2],
+th[data-name^=fixed_3],th[data-name^=fixed_4],
+th[data-name^=fixed_5],th[data-name^=fixed_6],
+th[data-name^=fixed_7],th[data-name^=fixed_8],
+th[data-name^=fixed_9]
+{
+    opacity:0;
+}
+
+.btn-check>.custom-control.custom-checkbox{
+    background-color: white;
+    border-color: white;
+    color: #00A09D;
+    cursor: pointer;
+}
+.btn-check>.custom-control.custom-checkbox:hover{
+    color: #212529;
+    background-color: #e6e5e5;
+    border-color: #e6e5e5;
+    cursor: pointer;
+}
+
+.btn-check-1>.custom-control.custom-checkbox:before{
+    content: "1";
+}
+.btn-check-2>.custom-control.custom-checkbox:before{
+    content: "2";
+}
+.btn-check-3>.custom-control.custom-checkbox:before{
+    content: "3";
+}
+.btn-check-4>.custom-control.custom-checkbox:before{
+    content: "4";
+}
+.btn-check-5>.custom-control.custom-checkbox:before{
+    content: "5";
+}
+.btn-check-6>.custom-control.custom-checkbox:before{
+    content: "6";
+}
+.btn-check-7>.custom-control.custom-checkbox:before{
+    content: "7";
+}
+.btn-check-8>.custom-control.custom-checkbox:before{
+    content: "8";
+}
+.btn-check-9>.custom-control.custom-checkbox:before{
+    content: "9";
+}
+
+.btn-check>.custom-control>input,.btn-check>.custom-control>label{
+    opacity:0;
+}
+
+.btn-check .custom-control-label:after{
+    top: -0.3125rem !important;
+    left: -5rem !important;
+    width: 10rem !important;
+    height: 5rem !important;
+    cursor: pointer;
+}

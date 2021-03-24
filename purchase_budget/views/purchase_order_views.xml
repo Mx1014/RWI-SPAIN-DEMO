@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="purchase_order_view_form_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.view.form.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <field name="date_order" position="after">
+                <field name="require_budget" invisible="1"/>
+                <field name="budget_id" options="{'no_create': 1, 'no_create_edit': 1}"
+                    attrs="{'required': [('require_budget','=',True)]}"/>
+            </field>
+            <notebook position="before">
+                <field name="budget_warning_message"/>
+            </notebook>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='analytic_tag_ids']" position="after">
+                <field name="budget_post_id" options="{'no_create': 1, 'no_create_edit': 1}" optional="hide"
+                    attrs="{'required': [('parent.budget_id','!=',False)]}" context="{'budget_id': parent.budget_id, 'product_id': product_id}"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

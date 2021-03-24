@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.importfield</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='adm_settins_container']" position="inside">
+                <div class="col-12 col-6 o_setting_box">
+                    <div class="o_setting_right_pane">
+                        <label for="adm_application_json_field_ids"/>
+                        <div class="content-group">
+                            <div class="mt16">
+                                <field name="adm_application_json_field_ids" class="o_light_label" >
+                                    <tree editable="bottom">
+                                        <field name="field_id"/>
+                                        <field name="alias_field" />
+                                    </tree>
+                                </field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-6 o_setting_box">
+                    <div class="o_setting_right_pane">
+                        <label for="required_status_application_ids"/>
+                        <div class="content-group">
+                            <div class="mt16">
+                                <field name="required_status_application_ids" class="o_light_label" >
+                                    <tree editable="bottom">
+                                        <field name="name"/>
+                                        <field name="description" />
+                                    </tree>
+                                </field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-6 o_setting_box">
+                    <div class="o_setting_right_pane">
+                        <label for="adm_application_webservice_configurator_ids"/>
+                        <div class="content-group">
+                            <div class="mt16">
+                                <field name="adm_application_webservice_configurator_ids" class="o_light_label" >
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="panel_configuration" />
+                                    </tree>
+                                </field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+
+    </record>
+
+</odoo>

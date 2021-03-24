@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_admissions_only" model="res.groups">
+        <field name="name">Admissions Only</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+        <field name="limit_menu_access" eval="[(4,ref('adm.adm_menu'))]"/>
+    </record>
+</odoo>

@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_my_home_menu_time_off" name="Portal layout: time_off menu entry" inherit_id="portal.portal_breadcrumbs" priority="50">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'time_off' or time_off or create_time_off" t-attf-class="breadcrumb-item #{'active ' if not (time_off and create_time_off) else ''}">
+                <a t-if="time_off or create_time_off" t-attf-href="/my/time_off?{{ keep_query() }}">Time Offs</a>
+                <t t-else="">Time Offs</t>
+            </li>
+            <li t-if="time_off" class="breadcrumb-item active">
+                <span t-field="time_off.holiday_status_id"/>: <span t-field="time_off.request_date_from"/> - <span t-field="time_off.request_date_to"/>
+            </li>
+            <li t-if="create_time_off" class="breadcrumb-item active">
+                New
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_time_off" name="Portal My Home : time_off entry" inherit_id="portal.portal_my_home" priority="50">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-if="user.employee_ids" t-call="portal.portal_docs_entry">
+                <t t-set="title">Time Offs</t>
+                <t t-set="url" t-value="'/my/time_off'"/>
+                <t t-set="count" t-value="time_off_count"/>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="portal_my_time_offs" name="My Time Offs">
+        <t t-call="portal.portal_layout">
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Time Offs</t>
+            </t>
+            <div class="mb4">
+                <a t-attf-href="/my/time_off/create?{{ keep_query() }}" class="btn btn-primary">Create Request</a>
+            </div>
+            <div class="card mb4">
+                <div class="card-header text-center">
+                    <a data-toggle="collapse" href="#time_off_summary">Time Off Summary</a>
+                </div>
+                <div id="time_off_summary" class="collapse show">
+                    <div class="table-responsive">
+                        <table class="table mb-0 o_portal_my_doc_table">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Unit</th>
+                                    <th class="text-right">Allowed</th>
+                                    <th class="text-right">Taken</th>
+                                    <th class="text-right">Remaining <span class="fa fa-question-circle" title="Equals to: Allowed - Taken"/></th>
+                                    <th class="text-right">Virtual Remaining <span class="fa fa-question-circle" title="Equals to: Allowed - Taken - Waiting Approval"/></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="time_off_types" t-as="time_off_type">
+                                    <td><span t-esc="time_off_type.name"/></td>
+                                    <td>
+                                        <span t-if="time_off_type.request_unit == 'hour'">Hours</span>
+                                        <span t-else="">Days</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-if="time_off_type.allocation_type != 'no'" t-esc="time_off_type.max_leaves"/>
+                                        <span t-else="">Any</span>
+                                    </td>
+                                    <td class="text-right"><span t-esc="time_off_type.leaves_taken"/></td>
+                                    <td class="text-right">
+                                        <span t-if="time_off_type.allocation_type != 'no'" t-esc="time_off_type.remaining_leaves"/>
+                                        <span t-else="">n/a</span>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-if="time_off_type.allocation_type != 'no'" t-esc="time_off_type.virtual_remaining_leaves"/>
+                                        <span t-else="">n/a</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <t t-if="not time_offs">
+                <p>There are no time offs found.</p>
+            </t>
+            <t t-if="time_offs" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>Type</th>
+                        <th>Employee</th>
+                        <th>Description</th>
+                        <th>From Date</th>
+                        <th>To Date</th>
+                        <th>Duration</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="time_offs" t-as="time_off">
+                        <td>
+                            <a t-attf-href="/my/time_off/#{time_off.id}?{{ keep_query() }}"><span t-field="time_off.holiday_status_id"/></a>
+                        </td>
+                        <td><span t-att-class="'text-muted' if time_off.employee_id == user.employee_ids else ''" t-field="time_off.employee_id"/></td>
+                        <td><span t-field="time_off.name"/></td>
+                        <td><span t-field="time_off.request_date_from"/></td>
+                        <td><span t-field="time_off.request_date_to"/></td>
+                        <td>
+                            <span t-field="time_off.number_of_days"/>
+                            <span t-if="time_off.number_of_days &lt;= 1">Day</span>
+                            <span t-else="">Days</span>
+                        </td>
+                        <td>
+                            <span t-if="time_off.state == 'draft' and not time_off.pullback_comment" class="badge" style="background:lightgray;">To Submit</span>
+                            <span t-if="time_off.state == 'draft' and time_off.pullback_comment" class="badge" style="background:pink;">Pullback</span>
+                            <span t-if="time_off.state == 'cancel'" class="badge badge-dark">Cancelled</span>
+                            <span t-if="time_off.state == 'confirm'" class="badge badge-info">To Approve</span>
+                            <span t-if="time_off.state == 'refuse'" class="badge badge-danger">Rejected</span>
+                            <span t-if="time_off.state == 'validate1'" class="badge badge-warning">Second Approval</span>
+                            <span t-if="time_off.state == 'validate'" class="badge badge-success">Approved</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </t>
+        </t>
+    </template>
+
+    <template id="portal_my_time_off" name="My Time Off">
+        <t t-call="portal.portal_layout">
+            <div class="container">
+                <form action="/my/time_off/save" method="post">
+                    <div class="card o_time_off_portal_form">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-8">
+                                    <h4>
+                                        <t t-if="time_off">
+                                            <span t-field="time_off.holiday_status_id"/>: <span t-field="time_off.request_date_from"/> - <span t-field="time_off.request_date_to"/>
+                                        </t>
+                                        <t t-else="">New</t>
+                                        <span t-if="time_off.state == 'draft' and not time_off.pullback_comment" class="badge" style="background:lightgray;">To Submit</span>
+                                        <span t-if="time_off.state == 'draft' and time_off.pullback_comment" class="badge" style="background:pink;">Pullback</span>
+                                        <span t-if="time_off.state == 'cancel'" class="badge badge-dark">Cancelled</span>
+                                        <span t-if="time_off.state == 'confirm'" class="badge badge-info">To Approve</span>
+                                        <span t-if="time_off.state == 'refuse'" class="badge badge-danger">Rejected</span>
+                                        <span t-if="time_off.state == 'validate1'" class="badge badge-warning">Second Approval</span>
+                                        <span t-if="time_off.state == 'validate'" class="badge badge-success">Approved</span>
+                                    </h4>
+                                    <div>
+                                        <button t-if="not readonly" type="submit" class="btn btn-primary mr4">Save</button>
+                                        <a t-if="readonly and time_off.state in ['draft','confirm'] and time_off.employee_id == user.employee_ids" t-attf-href="/my/time_off/#{time_off.id}/edit?{{ keep_query() }}" class="btn btn-primary mr4">Edit</a>
+                                        <a t-if="time_off and time_off.state == 'draft' and time_off.employee_id == user.employee_ids" t-attf-href="/my/time_off/#{time_off.id}/delete?{{ keep_query() }}" class="btn btn-secondary mr4">Delete</a>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4 text-right">
+                                    <a t-if="time_off.can_approve and time_off.state == 'confirm'" t-attf-href="/my/time_off/#{time_off.id}/approve?{{ keep_query() }}" class="btn btn-success ml4">Approve</a>
+                                    <a t-if="time_off.can_approve and time_off.state in ['confirm','validate','validate1']" t-attf-href="/my/time_off/#{time_off.id}/refuse?{{ keep_query() }}" class="btn btn-danger ml4">Reject</a>
+                                    <a t-if="readonly and time_off.state == 'draft' and time_off.employee_id == user.employee_ids" t-attf-href="/my/time_off/#{time_off.id}/confirm?{{ keep_query() }}" class="btn btn-info ml4">Confirm</a>
+                                    <a t-if="time_off.can_reset and time_off.state in ['confirm','refuse']" t-attf-href="/my/time_off/#{time_off.id}/draft?{{ keep_query() }}" class="btn ml4" style="background:lightgray;">Reset to Draft</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <input type="hidden" name="id" t-att-value="time_off.id"/>
+                            <div class="mb32">
+                                <div class="row mb8">
+                                    <div class="col-sm-12 col-md-3 col-lg-2"><label for="holiday_status_id">Type:</label></div>
+                                    <div class="col-sm-12 col-md-9 col-lg-10">
+                                        <select name="holiday_status_id" id="holiday_status_id" required="true" class="form-control o_time_off_portal_onchange" t-att-disabled="readonly">
+                                            <option value="">--- Type ---</option>
+                                            <t t-foreach="time_off_types.sudo()" t-as="time_off_type">
+                                                <option t-att-selected="time_off_type.id == time_off.holiday_status_id.sudo().id" t-att-value="time_off_type.id" t-esc="time_off_type.name"/>
+                                            </t>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb8" t-if="time_off">
+                                    <div class="col-sm-12 col-md-3 col-lg-2"><label for="employee_id">Employee:</label></div>
+                                    <div class="col-sm-12 col-md-9 col-lg-10">
+                                        <input class="form-control" type="text" name="employee_id" id="employee_id" disabled="true" t-att-value="time_off.employee_id.sudo().name"/>
+                                    </div>
+                                </div>
+                                <div class="table-responsive" t-if="time_off.can_approve and time_off.state == 'confirm'">
+                                    <table class="table border">
+                                        <thead>
+                                            <tr>
+                                                <th>Unit</th>
+                                                <th class="text-right">Allowed</th>
+                                                <th class="text-right">Taken</th>
+                                                <th class="text-right">Remaining <span class="fa fa-question-circle" title="Equals to: Allowed - Taken"/></th>
+                                                <th class="text-right">Virtual Remaining <span class="fa fa-question-circle" title="Equals to: Allowed - Taken - Waiting Approval"/></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tbody>
+                                                <tr>
+                                                    <t t-set="time_off_data" t-value="time_off.holiday_status_id.sudo().get_employees_days([time_off.employee_id.id])[time_off.employee_id.id][time_off.holiday_status_id.id]"/>
+                                                    <td>
+                                                        <span t-if="time_off.holiday_status_id.request_unit == 'hour'">Hours</span>
+                                                        <span t-else="">Days</span>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <span t-if="time_off.holiday_status_id.allocation_type != 'no'" t-esc="time_off_data['max_leaves']"/>
+                                                        <span t-else="">Any</span>
+                                                    </td>
+                                                    <td class="text-right"><span t-esc="time_off_data['leaves_taken']"/></td>
+                                                    <td class="text-right">
+                                                        <span t-if="time_off.holiday_status_id.allocation_type != 'no'" t-esc="time_off_data['remaining_leaves']"/>
+                                                        <span t-else="">n/a</span>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <span t-if="time_off.holiday_status_id.allocation_type != 'no'" t-esc="time_off_data['virtual_remaining_leaves']"/>
+                                                        <span t-else="">n/a</span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row mb8">
+                                    <div class="col-sm-12 col-md-3 col-lg-2"><label for="name">Description:</label></div>
+                                    <div class="col-sm-12 col-md-9 col-lg-10">
+                                        <input class="form-control" type="text" name="name" id="name" t-att-disabled="readonly" t-att-value="time_off.name"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-3 col-lg-2"><label for="request_date_from">From:</label></div>
+                                    <div class="col-sm-12 col-md-9 col-lg-4 mb8">
+                                        <input class="form-control" type="date" name="request_date_from" id="request_date_from" required="true" t-att-disabled="readonly" t-att-value="time_off.request_date_from"/>
+                                    </div>
+                                    <div class="col-sm-12 col-md-3 col-lg-2"><label for="request_date_to">To:</label></div>
+                                    <div class="col-sm-12 col-md-9 col-lg-4 mb8">
+                                        <input class="form-control" type="date" name="request_date_to" id="request_date_to" t-att-disabled="readonly" t-att-value="time_off.request_date_to"/>
+                                    </div>
+                                    <div class="col-sm-12 col-md-3 col-lg-2"><label for="request_date_from_period">Period:</label></div>
+                                    <div class="col-sm-12 col-md-9 col-lg-4 mb8">
+                                        <select name="request_date_from_period" id="request_date_from_period" class="form-control" t-att-disabled="readonly">
+                                            <option value="">--- Period ---</option>
+                                            <t t-foreach="request_date_from_period_options" t-as="option">
+                                                <option t-att-selected="option[0] == time_off.request_date_from_period" t-att-value="option[0]" t-esc="option[1]"/>
+                                            </t>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 col-sm-4 col-md-3 col-lg-2"><label for="request_unit_half">Half Day:</label></div>
+                                    <div class="col-6 col-sm-8 col-md-3 col-lg-4 mb8">
+                                        <input type="checkbox" name="request_unit_half" id="request_unit_half" class="o_time_off_portal_onchange" t-att-disabled="readonly" t-att-checked="time_off.request_unit_half"/>
+                                    </div>
+                                    <div class="col-6 col-sm-4 col-md-3 col-lg-2"><label for="request_unit_hours">Custom Hours:</label></div>
+                                    <div class="col-6 col-sm-8 col-md-3 col-lg-4 mb8">
+                                        <input type="checkbox" name="request_unit_hours" id="request_unit_hours" class="o_time_off_portal_onchange" t-att-disabled="readonly" t-att-checked="time_off.request_unit_hours"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-3 col-lg-2"><label for="request_hour_from">From:</label></div>
+                                    <div class="col-sm-12 col-md-9 col-lg-4 mb8">
+                                        <select name="request_hour_from" id="request_hour_from" class="form-control" t-att-disabled="readonly">
+                                            <option value="">---</option>
+                                            <t t-foreach="request_hour_from_options" t-as="option">
+                                                <option t-att-selected="option[0] == time_off.request_hour_from" t-att-value="option[0]" t-esc="option[1]"/>
+                                            </t>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-12 col-md-3 col-lg-2"><label for="request_hour_to">To:</label></div>
+                                    <div class="col-sm-12 col-md-9 col-lg-4 mb8">
+                                        <select name="request_hour_to" id="request_hour_to" class="form-control" t-att-disabled="readonly">
+                                            <option value="">---</option>
+                                            <t t-foreach="request_hour_to_options" t-as="option">
+                                                <option t-att-selected="option[0] == time_off.request_hour_to" t-att-value="option[0]" t-esc="option[1]"/>
+                                            </t>
+                                        </select>
+                                    </div>
+                                </div>
+                                <hr t-if="time_off.pullback_comment or (time_off.can_approve and time_off.state in ['confirm','validate1'])"/>
+                                <div class="row" t-if="time_off.pullback_comment or (time_off.can_approve and time_off.state in ['confirm','validate1'])">
+                                    <div class="col-6"><label for="pullback_comment">Pullback Comment:</label></div>
+                                    <div class="col-6 text-right">
+                                        <button t-if="time_off.can_approve and time_off.state in ['confirm','validate1']" type="submit" formaction="/my/time_off/pullback" class="btn ml4" style="background:pink;">Pullback</button>
+                                    </div>
+                                    <div class="col-12 mt8">
+                                        <textarea name="pullback_comment" t-att-disabled="not (time_off.can_approve and time_off.state in ['confirm','validate1'])" id="pullback_comment" class="form-control"><t t-esc="time_off.pullback_comment"/></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </t>
+    </template>
+</odoo>

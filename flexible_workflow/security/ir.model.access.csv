@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_workflow_workflow,access.workflow.workflow,model_workflow_workflow,,1,0,0,0
+access_workflow_stage,access.workflow.stage,model_workflow_stage,,1,0,0,0
+access_workflow_attribute,access.workflow.attribute,model_workflow_attribute,,1,0,0,0
+access_workflow_workflow_admin,access.workflow.workflow.admin,model_workflow_workflow,base.group_system,1,1,0,0
+access_workflow_stage_admin,access.workflow.stage.admin,model_workflow_stage,base.group_system,1,1,1,1
+access_workflow_attribute_admin,access.workflow.attribute.admin,model_workflow_attribute,base.group_system,1,1,1,1

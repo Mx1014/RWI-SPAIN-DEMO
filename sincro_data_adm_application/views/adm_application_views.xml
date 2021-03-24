@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sincro_data_server_action" model="ir.actions.act_window">
+        <field name="name">FACTS Sincro UD</field>
+        <field name="res_model">sincro_data.server</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <menuitem
+        id="sincro_data_server_menu"
+        name="Full Fabric Servers"
+        action="fullfabric_server_action"
+        parent="adm.adm_menu_configurations"
+        sequence="20"/>
+</odoo>

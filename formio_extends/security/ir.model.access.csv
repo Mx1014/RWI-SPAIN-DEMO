@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_formio_automation_user,access.formio.automation.user,model_formio_automation,,1,0,0,0
+access_formio_automation_sale,access.formio.automation.sale,model_formio_automation,formio.group_formio_admin,1,1,1,1
+access_formio_automation_mapping_user,access.formio.automation.mapping.user,model_formio_automation_mapping,,1,0,0,0
+access_formio_automation_mapping_sale,access.formio.automation.mapping.sale,model_formio_automation_mapping,formio.group_formio_admin,1,1,1,1

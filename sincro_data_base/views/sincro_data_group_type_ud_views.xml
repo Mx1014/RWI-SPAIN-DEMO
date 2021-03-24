@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sincro_data_group_type_ud_view_tree" model="ir.ui.view">
+        <field name="name">sincro_data.group_type_ud.view.tree</field>
+        <field name="model">sincro_data.group_type_ud</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="group_type"/>
+                <field name="group_ids" widget="many2many_tags"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

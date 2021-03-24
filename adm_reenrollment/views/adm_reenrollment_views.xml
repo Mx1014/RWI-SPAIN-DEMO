@@ -1,0 +1,231 @@
+<odoo>
+
+    <!-- Actions -->
+    <record model="ir.actions.act_window" id="action_reenrollment">
+        <field name="name">Reenrollments</field>
+        <field name="res_model">adm.reenrollment</field>
+        <field name="view_mode">kanban,tree,form,search</field>
+        <!--        <field name="context">{'search_default_group_status_id': True, 'search_default_current_school_year': True}</field>-->
+    </record>
+
+    <!-- Menus -->
+    <menuitem id="adm_menu_reenrollment" action="action_reenrollment"
+              name="Reenrollment" parent="adm.adm_menu" sequence="3"/>
+
+    <!-- Views -->
+    <record id="adm_reenrollment_view_kanban" model="ir.ui.view">
+        <field name="name">adm.reenrollment.view.kanban</field>
+        <field name="model">adm.reenrollment</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="stage_id" edit="false"
+                    class="o_kanban_project_tasks o_res_partner_kanban"
+                    disable_drag_drop_record="true" disable_sort_column="true">
+                <field name="partner_id"/>
+                <field name="image"/>
+                <field name="message_needaction_counter"/>
+                <field name="user_id"/>
+                <field name="id"/>
+                <field name="activity_ids"/>
+                <field name="activity_state"/>
+                <progressbar field="activity_state"
+                             colors='{"planned": "success", "today": "warning", "overdue": "danger"}'
+                             help="This bar allows to filter the opportunities based on scheduled activities."/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_res_partner_kanban">
+                            <t t-set="placeholder" t-value="'/base/static/img/avatar_grey.png'"/>
+
+                            <div class="o_kanban_image_fill_left d-none d-md-block"
+                                 t-attf-style="background-image:url('#{kanban_image('res.partner', 'image_128', record.partner_id.raw_value, placeholder)}')">
+                            </div>
+                            <div class="o_kanban_image d-md-none"
+                                 t-attf-style="background-image:url('#{kanban_image('res.partner', 'image_128', record.partner_id.raw_value, placeholder)}')">
+                            </div>
+                            <div class="o_dropdown_kanban dropdown">
+                                <a role="button" class="dropdown-toogle o-no-caret btn" data-toggle="dropdown"
+                                   data-display="static" href="#" aria-label="Dropdown menu"
+                                   title="Dropdown menu">
+                                    <span class="fa fa-ellipsis-v"/>
+                                </a>
+                                <div class="dropdown-menu" role="menu">
+                                    <a role="menuitem" type="edit" class="dropdown-item">Edit</a>
+                                    <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                                </div>
+                            </div>
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title oe_partner_heading"><field name="name"/></strong>
+                                <ul>
+                                    <li><strong>Grade level</strong>: <field name="grade_level_id"/></li>
+                                    <li><strong>Next grade level</strong>: <field name="next_grade_level_id"/></li>
+                                    <li><strong>Started at</strong>: <field name="create_date"/></li>
+                                </ul>
+
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        <t t-if="record.message_needaction_counter.raw_value">
+                                            <span role="alert" class='oe_kanban_mail_new mr4' title='Unread Messages'>
+                                                <i class='fa fa-comments' role="img" aria-label="Unread messages"/>
+                                                <t t-raw="record.message_needaction_counter.raw_value"/>
+                                            </span>
+                                        </t>
+                                        <field name="activity_ids" widget="kanban_activity"/>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <img t-att-src="kanban_image('res.users', 'image_128', record.user_id.raw_value)"
+                                             t-att-title="record.user_id.value" t-att-alt="record.user_id.value"
+                                             class="oe_kanban_avatar"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="adm_reenrollment_view_form" model="ir.ui.view">
+        <field name="name">adm.reenrollment.view.form</field>
+        <field name="model">adm.reenrollment</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger"
+                            attrs="{'invisible': [('active', '=', True)]}"/>
+                    <field name="name" class="h1"/>
+                    <group>
+                        <group name="left_group">
+                            <field name="partner_id" string="Student" domain="[('person_type', '=', 'student')]"/>
+                            <field name="active"/>
+                        </group>
+
+                        <group name="right_group">
+                            <field name="image" widget="image"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Demographics" name="demographics">
+                            <group>
+                                <field name="email"/>
+                                <field name="mobile"/>
+                                <field name="phone"/>
+                            </group>
+                            <!--                            <field name="image"/>-->
+                        </page>
+                        <page string="Family" name="family">
+                            <group>
+                                <field name="family_id"/>
+                                <field name="family_res_id"/>
+                                <hr colspan="2"/>
+                                <field name="partner_guardian1"/>
+                                <field name="partner_guardian2"/>
+                            </group>
+                        </page>
+                        <page string="Responsibles" name="responsibles">
+                            <field name="custody_user_ids" mode="kanban"/>
+                        </page>
+                        <page string="Location" name="location">
+                            <field name="partner_home_address_id"/>
+                        </page>
+                        <page string="Relationships" name="relationships">
+                            <field name="partner_relationship_ids"/>
+                        </page>
+                        <page string="Documentation" name="documentation">
+                            <group>
+                                <group>
+                                    <field name="student_id_documentation_file_name" invisible="1"/>
+                                    <field name="student_id_documentation_file"
+                                           filename="student_id_documentation_file_name"/>
+                                </group>
+                                <group>
+                                    <field name="guardian1_id_documentation_file_name" invisible="1"/>
+                                    <field name="guardian1_id_documentation_file"
+                                           filename="guardian1_id_documentation_file_name"/>
+
+                                    <field name="guardian2_id_documentation_file_name" invisible="1"/>
+                                    <field name="guardian2_id_documentation_file"
+                                           filename="guardian2_id_documentation_file_name"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread" options="{'post_refresh': 'recipients'}"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="adm_reenrollment_view_search" model="ir.ui.view">
+        <field name="name">adm.reenrollment.view.search</field>
+        <field name="model">adm.reenrollment</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter name="group_status_id" string="Status" context="{'group_by':'stage_id'}"/>
+                <field name="name"/>
+                <field name="grade_level_id"/>
+                <!--                <filter name="current_school_year" string="Current School Year"-->
+                <!--                        domain="[('is_current_school_year', '=', True)]"/>-->
+
+                <searchpanel>
+                    <field name="stage_id" icon="fa-columns"/>
+                    <field name="grade_level_id" icon="fa-columns"/>
+                    <field name="school_year_id" icon="fa-columns"/>
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+    <!-- Stages views -->
+    <!-- Sorry, but I am too lazy to put this in a different file -->
+    <record model="ir.ui.view" id="view_reenrollment_status_form">
+        <field name="name">Reenrollment status Form</field>
+        <field name="model">adm.reenrollment.stage</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="description"/>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="fold"/>
+                            <field name="import_to_facts"/>
+                        </group>
+                        <group>
+                            <field name="type" widget="radio"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Others" attrs="{'invisible': [('import_to_facts', '!=', True)]}">
+                            <group>
+                                <group>
+                                    <field name="reenrollment_status_to_facts"/>
+                                    <field name="sub_status_to_facts"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <act_window name="Send email"
+                res_model="mail.compose.message"
+                binding_model="adm.reenrollment"
+                binding_views="list"
+                view_mode="form"
+                target="new"
+                id="action_reenrollment_mass_mail"
+                context="{
+                    'default_composition_mode': 'mass_mail',
+                    'default_partner_to': '${object.id or \'\'}',
+                }"/>
+</odoo>

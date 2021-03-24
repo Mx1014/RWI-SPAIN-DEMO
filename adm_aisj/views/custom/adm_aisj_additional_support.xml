@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="adm_aisj_additional_support_view_tree" model="ir.ui.view">
+        <field name="name">adm.aisj.additional.support.view.tree</field>
+        <field name="model">adm_aisj.additional.support</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="adm_aisj_additional_support_action" model="ir.actions.act_window">
+        <field name="name">AISJ Additional support</field>
+        <field name="res_model">adm_aisj.additional.support</field>
+        <field name="view_mode">tree,search</field>
+    </record>
+
+    <menuitem id="adm_aisj_additional_support_menu"
+              parent="adm.adm_custom_menu"
+              action="adm_aisj.adm_aisj_additional_support_action"/>
+
+</odoo>

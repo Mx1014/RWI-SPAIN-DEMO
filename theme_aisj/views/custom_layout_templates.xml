@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<!--    <record id="footer" model="ir.ui.view">-->
+<!--        <field name="name">theme_asij.footer</field>-->
+<!--        <field name="inherit_id" ref="website.footer_custom"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//div[@id='footer']" position="replace">-->
+<!--              <h1>HOLA SERGIO</h1>-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
+
+    <template id="header" inherit_id="web.frontend_layout">
+        <xpath expr="//header" position="before">
+
+        </xpath>
+    </template>
+    <template id="footer" inherit_id="website.footer_custom">
+        <xpath expr="//div[@id='footer']" position="replace">
+            <section class="s_text_block pt16 pb8" data-name="Text block">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-lg-6">
+                        <ul class="listFooter">
+                            <li>American International School of Jeddah</li>
+                            <li>PO Box 127328 Jeddah, KSA 21352</li>
+                            <li>Telephone: +966 12 232 8668</li>
+                        </ul>
+                        <ul class="listFooter">
+                            <li>2019 American School of Jeddah</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-2" id="connect">
+
+                    </div>
+                    <div class="col-lg-4">
+                      <h5>
+                        <span>Our Partners</span>
+                      </h5>
+                      <div class="row">
+                          <div class="col-6">
+                              <img src="/theme_aisj/static/img/footer/CESS-logo.png" width="93"></img>
+                          </div>
+                          <div class="col-6">
+                              <img src="/theme_aisj/static/img/footer/nesa_logo.png" width="78"></img>
+                          </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </section>
+        </xpath>
+    </template>
+</odoo>

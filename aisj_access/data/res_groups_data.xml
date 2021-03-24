@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_purchase_only" model="res.groups">
+        <field name="name">Purchase Only</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+        <field name="implied_ids" eval="[(4,ref('purchase.group_purchase_user'))]"/>
+        <field name="limit_menu_access" eval="[(4,ref('purchase.menu_purchase_root'))]"/>
+    </record>
+</odoo>

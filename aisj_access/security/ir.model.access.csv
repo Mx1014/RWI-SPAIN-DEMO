@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_account_type_purchase_only,access.account.account.type.purchase.only,account.model_account_account_type,group_purchase_only,1,0,0,0
+access_account_partial_reconcile_purchase_only,access.account.partial.reconcile.purchase.only,account.model_account_partial_reconcile,group_purchase_only,1,0,0,0

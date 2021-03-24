@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_inherit" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="hr_expense.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='use_mailgateway']/../../.." position="inside">
+                <div class="col-12 col-lg-6 o_setting_box" title="Advances">
+                    <div class="o_setting_left_pane"/>
+                    <div class="o_setting_right_pane">
+                        <span class="o_form_label">Advances</span>
+                        <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." aria-label="Values set here are company-specific." groups="base.group_multi_company" role="img"/>
+                        <div class="text-muted">
+                            Journals and product to use for expense advance
+                        </div>
+                        <div class="content-group">
+                            <div class="row mt16">
+                                <label string="Journal" for="advance_journal_id" class="col-lg-3 o_light_label"/>
+                                <field name="advance_journal_id" domain="[('type','in',['purchase']),('company_id','=',company_id)]"/>
+                            </div>
+                            <div class="row">
+                                <label string="Bank Journal" for="advance_bank_journal_id" class="col-lg-3 o_light_label"/>
+                                <field name="advance_bank_journal_id" domain="[('type','in',['bank','cash']),('company_id','=',company_id)]"/>
+                            </div>
+                            <div class="row">
+                                <label string="Product" for="advance_product_id" class="col-lg-3 o_light_label"/>
+                                <field name="advance_product_id" domain="[('type','in',['service'])]"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

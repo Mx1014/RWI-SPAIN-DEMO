@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sincro_data_server_view_tree" model="ir.ui.view">
+        <field name="name">sincro_data.server.view.tree</field>
+        <field name="model">sincro_data.server</field>
+        <field name="arch" type="xml">
+            <tree string="Full Fabric Servers">
+                <field name="name"/>
+                <field name="path"/>
+                <field name="method"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="sincro_data_server_view_form" model="ir.ui.view">
+        <field name="name">sincro_data.server.view.form</field>
+        <field name="model">sincro_data.server</field>
+        <field name="arch" type="xml">
+            <form string="Sincro Data Server">
+                <header>
+                    <button string="Retrieve Data" name="action_retrieve_data" type="object" class="oe_highlight" />
+                    <!--                    <button string="Map IDs" name="action_map_sincro_data_id" type="object" groups="base.group_no_one"/>-->
+                    <!--                    <button string="Delete All Data" name="action_delete_all_data" type="object"-->
+                    <!--                            confirm="Are you sure you would like to delete all data?" groups="base.group_no_one"/>-->
+                    <button string="TEST" name="action_test_connection" type="object" class="btn-warning oe_highlight" />
+                </header>
+                <sheet>
+                    <h2>
+                        <field name="computed_path"/>
+                    </h2>
+                    <group>
+                        <field name="api_name"/>
+                        <field name="api_base_url"/>
+                        <field name="api_header_ids" widget="one2many"/>
+                        <field name="name"/>
+                        <field name="method"/>
+                        <field name="path"/>
+                        <field name="parameter_ids" widget="many2many"/>
+                        <field name="model_id"/>
+                        <field name="domain"/>
+                        <field name="json_configuration_id"/>
+                        <field name="json_pretty"/>
+                        <field name="retrieve_date"/>
+                        <field name="interval_minutes"/>
+                        <field name="skip"/>
+                        <field name="limit"/>
+                        <field name="response_code" attrs="{'invisible': True}"/>
+                        <field name="is_application_server_default"/>
+                        <field name="is_reenrollment_server_default"/>
+                        <h4 class='text-warning'>
+                            TEST INF
+                        </h4>
+                        <field name="test_item_model_id"/>
+                        <field name="computed_path"/>
+
+                        <!--                        <group string="Testing">-->
+                        <!--                            <field name="application_id"/>-->
+                        <!--                            <field name="program_list_check"/>-->
+                        <!--                        </group>-->
+                    </group>
+                    <notebook>
+                        <page string="TEST Result">
+                            <div class="d-flex">
+                                <div class="col-6">
+                                    <div class="col-12 h4 text-warning">REQUEST</div>
+                                    <div class="col-12 border border-warning">
+                                        <field name="json_example" readonly="1"/>
+                                    </div>
+
+                                </div>
+                                <div attrs="{'invisible': [('response_code', '!=', 200)]}" class="col-6">
+                                    <div class="class-12 h4 text-success">RESPONSE</div>
+                                    <div class="class-12 border border-success p-2">
+                                        <field name="response_message" readonly="1"/>
+                                    </div>
+                                </div>
+                                <div attrs="{'invisible': [('response_code', '==', 200)]}" class="col-6">
+                                    <div class="class-12 h4 text-danger">RESPONSE</div>
+                                    <div class="class-12 border border-danger p-2">
+                                        <field name="response_message" readonly="1"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </page>
+                        <page string="Logs">
+                            <field name="log_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

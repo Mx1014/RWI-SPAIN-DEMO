@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--  status_type = fields.Selection([-->
+    <!--        ("stage", "Stage"),-->
+    <!--        ("done", "Done"),-->
+    <!--        ("return", "Return To Parents"),-->
+    <!--        ("started", "Application Started"),-->
+    <!--        ("submitted", "Submitted"),-->
+    <!--        ("cancelled", "Cancelled")-->
+
+    <record id="view_sincro_data_export_data_tree" model="ir.ui.view">
+        <field name="name">sincro.data.export.data.tree</field>
+        <field name="model">sincro_data.export_data</field>
+        <field name="arch" type="xml">
+            <tree decoration-info="status_type=='stage'" decoration-success="status_type=='done'"
+                  decoration-primary="status_type=='return'" decoration-warning="status_type=='started'"
+                  decoration-bf="status_type=='submitted'" decoration-danger="status_type=='cancelled'"
+                  default_order="stage">
+                <field name="item"/>
+                <field name="stage"/>
+                <field name="status_type"/>
+                <button string="Import ALL" name="import_all_students" type="object"
+                        class="btn btn-warning oe_highlight"/>
+                <!--                <field name="first_imported_date"/>-->
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_sincro_data_export_data_form" model="ir.ui.view">
+        <field name="name">sincro.data.export.data.form</field>
+        <field name="model">sincro_data.export_data</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="imported"/>
+                <field name="item"/>
+                <field name="first_imported_date"/>
+                <field name="export_data_wizard_id"/>
+            </form>
+        </field>
+    </record>
+
+    <record id="base_view_sincro_data_export_data_filter" model="ir.ui.view">
+        <field name="model">sincro_data.export_data</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="Stage" name="stage"
+                        domain="[('status_type', '=', 'stage')]"/>
+                <filter string="Done" name="done"
+                        domain="[('status_type', '=', 'done')]"/>
+                <filter string="Return to Parents" name="return"
+                        domain="[('status_type', '=', 'return')]"/>
+                <filter string="Started" name="started"
+                        domain="[('status_type', '=', 'started')]"/>
+                <filter string="Submitted" name="submitted"
+                        domain="[('status_type', '=', 'submitted')]"/>
+                <filter string="Cancelled" name="cancelled"
+                        domain="[('status_type', '=', 'cancelled')]"/>
+                <filter name="group_stage_id" string="Stage" context="{'group_by':'stage'}"/>
+            </search>
+        </field>
+    </record>
+</odoo>
